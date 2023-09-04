@@ -3,12 +3,21 @@ import { CATEGORY_OBJ } from "../../../config/kakao-config";
 
 const { kakao } = window;
 
+const options = {
+  location: new window.kakao.maps.LatLng(
+    37.510901492192744,
+    127.04499359218127
+  ),
+};
+
 function SearchContainer(props) {
   const [searchInputValue, setSearchInputValue] = useState("");
   const [keywordCheck, setKeywordCheck] = useState(true);
   const [searchResult, setSearchResult] = useState([]);
   const inputRef = useRef(null);
   const [btnActive, setBtnActive] = useState();
+
+  const places = new window.kakao.maps.services.Places();
 
   //input change
   function onSearchIPChange(e) {
@@ -28,7 +37,7 @@ function SearchContainer(props) {
       setKeywordCheck(false);
       return;
     }
-    const places = new window.kakao.maps.services.Places();
+
     const callback = function (result, status, pagination) {
       if (status === window.kakao.maps.services.Status.OK) {
         console.log("result", result);
@@ -36,19 +45,28 @@ function SearchContainer(props) {
         props.setMarkers([...result]);
       }
     };
-    const options = {
-      location: new window.kakao.maps.LatLng(
-        37.510901492192744,
-        127.04499359218127
-      ),
-    };
+
     places.keywordSearch(searchInputValue, callback, options);
   }
 
   //카테고리 버튼 클릭 핸들러
   function cateBtnClickHandler(e) {
-    console.log("target", e.target.value);
     setBtnActive(e.target.value);
+
+    const placeSearchCB = (data, status, pagination) => {
+      if (status === kakao.maps.services.Status.OK) {
+        setSearchResult(data);
+        props.setMarkers([...data]);
+      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        // 검색결과가 없는경우 해야할 처리가 있다면 이곳에 작성해 주세요
+      } else if (status === kakao.maps.services.Status.ERROR) {
+        // 에러로 인해 검색결과가 나오지 않은 경우 해야할 처리가 있다면 이곳에 작성해 주세요
+      }
+    };
+
+    places.categorySearch(e.target.id, placeSearchCB, options, {
+      useMapBounds: true,
+    });
   }
 
   return (
