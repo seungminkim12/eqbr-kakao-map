@@ -8,18 +8,19 @@ import LandingPage from "./components/view/LandingPage";
 import Bookmark from "./components/view/bookmark";
 
 function App() {
-  // const [markers, setMarkers] = useState([]);
   return (
     <>
-      <div style={{ display: "flex", overflow: "none" }}>
-        <Header />
-      </div>
+      <div style={{ height: "100%" }}>
+        <div style={{ display: "flex", overflow: "none" }}>
+          <Header />
+        </div>
 
-      <Routes>
-        <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/map" element={<LandingPage />}></Route>
-        <Route path="/bookmark" element={<Bookmark />}></Route>
-      </Routes>
+        <Routes>
+          <Route path="/" element={<LandingPage />}></Route>
+          <Route path="/map" element={<LandingPage />}></Route>
+          <Route path="/bookmark" element={<Bookmark />}></Route>
+        </Routes>
+      </div>
     </>
   );
 }

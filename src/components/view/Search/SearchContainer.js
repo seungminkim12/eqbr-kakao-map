@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { CATEGORY_OBJ } from "../../../config/kakao-config";
 
+const { kakao } = window;
+
 function SearchContainer(props) {
   const [searchInputValue, setSearchInputValue] = useState("");
   const [keywordCheck, setKeywordCheck] = useState(true);
@@ -21,22 +23,23 @@ function SearchContainer(props) {
   //검색 버튼 클릭 핸들러
   function searchClickHandler(e) {
     e.preventDefault();
-
+    console.log("in");
     if (!searchInputValue) {
       setKeywordCheck(false);
       return;
     }
     const places = new window.kakao.maps.services.Places();
-    const callback = function (result, status) {
+    const callback = function (result, status, pagination) {
       if (status === window.kakao.maps.services.Status.OK) {
+        console.log("result", result);
         setSearchResult(result);
-        props.setMarkers([...props.markers, ...result]);
+        props.setMarkers([...result]);
       }
     };
     const options = {
       location: new window.kakao.maps.LatLng(
-        37.51086544448419,
-        127.04501336409375
+        37.510901492192744,
+        127.04499359218127
       ),
     };
     places.keywordSearch(searchInputValue, callback, options);
@@ -62,7 +65,6 @@ function SearchContainer(props) {
             value="검색"
             onClick={searchClickHandler}
             ref={inputRef}
-            disabled
           />
         </div>
         <div style={{}}>
