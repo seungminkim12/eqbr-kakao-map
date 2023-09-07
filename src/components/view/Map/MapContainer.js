@@ -19,13 +19,10 @@ const MapContainer = (props) => {
   const [keepMarkers, setKeepMarkers] = useState([]);
   const [customOverlays, setCustomOverlays] = useState([]);
 
-  console.log("rerender");
-
   //eqbr 마커 생성을 위한 useEffect
   useEffect(() => {
     //지도 생성 및 객체 리턴
     map = new kakao.maps.Map(container.current, options);
-    console.log("useEff");
 
     const marker = new kakao.maps.Marker({
       map,
@@ -63,8 +60,7 @@ const MapContainer = (props) => {
     titleDiv.className = "title";
     titleDiv.innerText = place.place_name;
     const closeSpan = document.createElement("span");
-    closeSpan.innerText = "x";
-    closeSpan.className = "overlay_close";
+    closeSpan.className = "close";
 
     const overlayBody = document.createElement("div");
     overlayBody.className = "overlay_body";

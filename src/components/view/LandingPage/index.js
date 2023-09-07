@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import SearchContainer from "../Search/SearchContainer";
 import MapContainer from "../Map/MapContainer";
 
-function LandingPage() {
+function LandingPage(props) {
   const [markers, setMarkers] = useState([]);
 
   return (
     <div style={{ display: "flex", overflow: "none", paddingTop: "50px" }}>
-      <SearchContainer setMarkers={setMarkers} markers={markers} />
+      <SearchContainer
+        setMarkers={setMarkers}
+        markers={markers}
+        bookmark={props.bookmark}
+      />
       <MapContainer markers={markers} />
     </div>
   );

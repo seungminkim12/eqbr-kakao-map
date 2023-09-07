@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 function Header() {
-  const [selectedBtn, setSelectedBtn] = useState("map");
-
+  const [selectedBtn, setSelectedBtn] = useState("");
+  const location = useLocation();
   //menu btn click handler
   function menuBtnHandler(e) {
     setSelectedBtn(e.target.id);
   }
+
+  useEffect(() => {
+    setSelectedBtn(location.pathname.replace("/", ""));
+  }, []);
 
   return (
     <header

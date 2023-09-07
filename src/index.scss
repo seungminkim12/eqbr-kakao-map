@@ -7,6 +7,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* -ms-overflow-style: none; */
 }
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
 
 /* ::-webkit-scrollbar {
   display: none;
@@ -42,7 +47,6 @@ code {
 .menu-btn.select {
   color: white;
   text-decoration: underline;
-  cursor: default;
 }
 
 /* 가로 스크롤바 */
@@ -155,3 +159,29 @@ code {
 .info .link {
   color: #5085bb;
 }
+
+//bookmark card css
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 30%;
+  // width: 50%;
+  margin: 10px auto;
+  border: 3px solid #3866dd;
+}
+
+// .card {
+
+// }
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+// .bookmark-list li {
+//   display: inline-block;
+// }
