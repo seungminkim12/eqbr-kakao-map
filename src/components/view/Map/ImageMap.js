@@ -1,16 +1,17 @@
 import React, { forwardRef } from "react";
 
 const ImageMap = forwardRef((props, ref) => {
+  console.log("props", props);
   return (
     <>
       <div
         style={{
           margin: "0 auto",
           display: "flex",
-          visibility:
-            props.savedBookmark && props.savedBookmark.length > 0
-              ? "visible"
-              : "hidden",
+          // visibility:
+          // props.savedBookmark && props.savedBookmark.length > 0
+          //   ? "visible"
+          //   : "hidden",
         }}
       >
         <div style={{}}>지도</div>

@@ -1,26 +1,9 @@
 import React from "react";
-import Header from "./components/view/Header";
 import "./App.scss";
-import { Route, Routes } from "react-router-dom";
-import LandingPage from "./components/view/LandingPage";
-import Bookmark from "./components/view/bookmark";
+import Navigation from "./router/Navigation";
 
 function App() {
-  return (
-    <>
-      <div style={{ height: "100%", overflow: "hidden" }}>
-        <div style={{ display: "flex", overflow: "none" }}>
-          <Header />
-        </div>
-
-        <Routes>
-          <Route path="/" element={<LandingPage />}></Route>
-          <Route path="/map" element={<LandingPage />}></Route>
-          <Route path="/bookmark" element={<Bookmark />}></Route>
-        </Routes>
-      </div>
-    </>
-  );
+  return <Navigation />;
 }
 
 export default App;

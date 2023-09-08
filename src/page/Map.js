@@ -1,17 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-
-const { kakao } = window;
-
-const eqbrCoord = new kakao.maps.LatLng(37.510901492192744, 127.04499359218127); //지도의 중심좌표.
-
-const options = {
-  //지도를 생성할 때 필요한 기본 옵션
-  center: eqbrCoord,
-  level: 3, //지도의 레벨(확대, 축소 정도)
-};
-let map = null;
-
-const bounds = new kakao.maps.LatLngBounds();
+import { createMap } from "../module/kakao-api";
 
 const MapContainer = (props) => {
   //지도를 담을 영역의 DOM 레퍼런스
@@ -21,36 +9,20 @@ const MapContainer = (props) => {
 
   //eqbr 마커 생성을 위한 useEffect
   useEffect(() => {
-    //지도 생성 및 객체 리턴
-    map = new kakao.maps.Map(container.current, options);
+    createMap(container);
 
-    const marker = new kakao.maps.Marker({
-      map,
-      position: eqbrCoord,
-      clickable: true,
-    });
+    // const marker = new kakao.maps.Marker({
+    //   map,
+    //   position: eqbrCoord,
+    //   clickable: true,
+    // });
 
-    marker.setMap(map);
+    // marker.setMap(map);
   }, []);
 
   //커스텀오버레이 생성 함수
   function addCustomOverlay(place, marker) {
-    // const content = `
-    // <div class="wrap">
-    //   <div class="info">
-    //       <div class="title">
-    //           ${place.place_name}
-    //           <span class="overlay_close"  title="닫기"></span>
-    //       </div>
-    //       <div class="overlay_body">
-    //           <div class="desc">
-    //               <div class="ellipsis">${place.road_address_name}</div>
-    //               <div class="jibun ellipsis">${place.address_name}</div>
-    //               <div>${place.phone}</div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // </div>   `;
+    //개선 필요
     const content = document.createElement("div");
     content.className = "wrap";
     const infoDiv = document.createElement("div");
@@ -144,12 +116,14 @@ const MapContainer = (props) => {
   };
 
   useEffect(() => {
+    //렌더링 시 커스텀 오버레이 열리는 현상 방지
     if (keepMarkers.length > 0) {
       keepMarkers.forEach((keepMarker) => {
         keepMarker.setMap(null);
       });
       setKeepMarkers([]);
     }
+    //
     props.markers.map((marker) => {
       displayMarker(marker);
     });

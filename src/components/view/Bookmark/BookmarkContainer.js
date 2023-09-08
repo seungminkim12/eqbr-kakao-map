@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  moreInfoButtonHandler,
-  pathButtonClickHandler,
-} from "../../utils/CommonFunction";
 import ImageMap from "../Map/ImageMap";
+import {
+  openKakaoMapDetail,
+  openKakaoMapNavigation,
+} from "../../../action/user_action";
 
 const { kakao } = window;
 
@@ -18,15 +18,16 @@ function Bookmark() {
   const [savedBookmark, setSavedBookmark] = useState([]);
   const content = 10;
   const [bookmarkList, setBookmarkList] = useState([]);
-  // const [firstContent, setFirstContent] = useState(1);
   let firstContent = 1;
   const [lastContent, setLastContent] = useState(content);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoadMore, setIsLoadMore] = useState(false);
 
+  console.log("bookmarkList", bookmarkList);
   //이미지 지도 컨테이너
   const staticMapContainer = useRef(null);
+  console.log("staticMapContainer", staticMapContainer);
 
   const options = {
     //지도를 생성할 때 필요한 기본 옵션
@@ -94,7 +95,7 @@ function Bookmark() {
     );
 
     const position = new kakao.maps.LatLng(+place.y, +place.x);
-
+    console.log("map", map);
     const marker = new kakao.maps.Marker({
       map,
       position,
@@ -118,19 +119,16 @@ function Bookmark() {
      * 이미지 지도
      */
     map = new kakao.maps.Map(staticMapContainer.current, options);
-
-    // bookmark.map((bmk) => {
-    //   displayMarker(bmk);
-    // });
-    const markerList = JSON.parse(localStorage.getItem("eqbrFavoriteSorted"));
-
+    console.log("map", map);
+    // const markerList = JSON.parse(localStorage.getItem("eqbrFavoriteSorted"));
+    const markerList = savedBookmark;
     markerList.map((bmk) => {
       displayMarker(bmk);
     });
   }, []);
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", overflow: "auto" }}>
       {bookmarkList && bookmarkList.length > 0 ? (
         <div
           style={{
@@ -197,9 +195,7 @@ function Bookmark() {
                             </li>
                             <li>
                               <div>
-                                <button
-                                  onClick={() => moreInfoButtonHandler(sb)}
-                                >
+                                <button onClick={() => openKakaoMapDetail(sb)}>
                                   상세정보로 이동
                                 </button>
                               </div>
@@ -208,7 +204,7 @@ function Bookmark() {
                               <span>
                                 <button
                                   onClick={() => {
-                                    pathButtonClickHandler(sb);
+                                    openKakaoMapNavigation(sb);
                                   }}
                                 >
                                   길찾기로 이동
