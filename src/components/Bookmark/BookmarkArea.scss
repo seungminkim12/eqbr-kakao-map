@@ -1,0 +1,39 @@
+/*
+bookmark-items
+bmk-info-family
+bmk-button-family
+*/
+
+.bookmark-items {
+  border: 1px solid black;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.bmk-info-family {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bmk-button-family {
+  display: flex;
+  align-items: center;
+}
+
+.bookmark-button {
+  position: relative;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #6aafe6;
+  /* box-shadow: 0 15px 35px #6aafe6; */
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+  font-family: "Gamja Flower", cursive;
+}
+.bookmark-button:hover {
+  background-color: #6aafe6;
+  color: #d4dfe6;
+}

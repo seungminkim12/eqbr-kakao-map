@@ -1,0 +1,66 @@
+.search-list-container {
+  width: 100%;
+  height: 100%;
+  /* position: absolute; */
+  overflow-y: auto;
+}
+
+/**
+detail
+**/
+details {
+  margin-bottom: 1rem;
+}
+
+.place-summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.place-detail {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+details > summary {
+  background: #00b4cc;
+  padding: 1rem;
+  outline: 0;
+  cursor: pointer;
+  transition: background 0.5s;
+}
+
+details > summary::-webkit-details-marker {
+  background: url(https://marshall-storage.tistory.com/attachment/cfile29.uf@993E16335F785C0037CB43.svg)
+    no-repeat center;
+  background-size: contain;
+  color: transparent;
+  transform: rotate3d(0, 0, 1, 90deg);
+  transition: transform 0.25s;
+}
+
+details[open] > summary::-webkit-details-marker {
+  transform: rotate3d(0, 0, 1, 180deg);
+}
+
+details[open] > summary {
+  background: #00b4cc;
+}
+
+details[open] > summary ~ * {
+  animation: reveal 0.5s;
+  background: #00b4cc;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}

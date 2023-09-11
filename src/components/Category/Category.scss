@@ -1,0 +1,29 @@
+.category-form {
+  width: 100%;
+  overflow: scroll;
+  color: #112031;
+  /* border: 1px solid #000; */
+  /* 가로 스크롤 */
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.category-item {
+  position: relative;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #6aafe6;
+  /* box-shadow: 0 15px 35px #6aafe6; */
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+  font-family: "Gamja Flower", cursive;
+}
+.category-item:hover {
+  background-color: #6aafe6;
+  color: #d4dfe6;
+}
+.active {
+  background-color: #6aafe6;
+  color: #d4dfe6;
+}

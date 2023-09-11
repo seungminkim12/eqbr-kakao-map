@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import ImageMap from "../Map/ImageMap";
-import {
-  openKakaoMapDetail,
-  openKakaoMapNavigation,
-} from "../../../action/user_action";
+import { openKakaoMapDetail } from "../action/user_action";
+// import ImageMap from "../Map/ImageMap";
 
 const { kakao } = window;
 
@@ -195,7 +192,11 @@ function Bookmark() {
                             </li>
                             <li>
                               <div>
-                                <button onClick={() => openKakaoMapDetail(sb)}>
+                                <button
+                                  onClick={() => {
+                                    // openKakaoMapDetail(sb)
+                                  }}
+                                >
                                   상세정보로 이동
                                 </button>
                               </div>
@@ -204,7 +205,7 @@ function Bookmark() {
                               <span>
                                 <button
                                   onClick={() => {
-                                    openKakaoMapNavigation(sb);
+                                    // openKakaoMapNavigation(sb);
                                   }}
                                 >
                                   길찾기로 이동

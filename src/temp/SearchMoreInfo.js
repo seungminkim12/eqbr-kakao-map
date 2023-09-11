@@ -4,6 +4,8 @@ import {
   moreInfoButtonHandler,
 } from "../../utils/CommonFunction";
 
+import "./SearchMoreInfo.scss";
+
 function SearchMoreInfo(props) {
   //북마크 버튼 핸들러
   function bookmarkButtonHandler(place, setBookmark) {
@@ -37,7 +39,7 @@ function SearchMoreInfo(props) {
     <>
       <span>
         <button
-          className="more-info-button"
+          className="search-button"
           onClick={() => {
             moreInfoButtonHandler(props.place);
           }}
@@ -47,7 +49,7 @@ function SearchMoreInfo(props) {
       </span>
       <span>
         <button
-          className="bookmark-button"
+          className="search-button"
           onClick={() => {
             bookmarkButtonHandler(props.place, props.setBookmark);
           }}
@@ -57,7 +59,7 @@ function SearchMoreInfo(props) {
       </span>
       <span>
         <button
-          className="path-button"
+          className="search-button"
           onClick={() => {
             pathButtonClickHandler(props.place);
           }}

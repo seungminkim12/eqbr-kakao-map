@@ -1,8 +1,8 @@
 import React from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
-import LandingPage from "../components/view/LandingPage/LandingPage";
-import Bookmark from "../components/view/Bookmark/BookmarkContainer";
+import Bookmark from "../page/Bookmark";
 import ErrorPage from "../page/ErrorPage";
+import Map from "../page/Map";
 import PageLayout from "./PageLayout";
 
 function Navigation() {
@@ -10,7 +10,7 @@ function Navigation() {
     <Routes>
       <Route element={<PageLayout />}>
         <Route path="/" element={<Navigate replace to="/map" />}></Route>
-        <Route path="/map" element={<LandingPage />}></Route>
+        <Route path="/map" element={<Map />}></Route>
         <Route path="/bookmark" element={<Bookmark />}></Route>
       </Route>
       <Route path="/*" element={<ErrorPage />}></Route>

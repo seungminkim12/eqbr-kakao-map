@@ -1,15 +1,13 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../components/view/Header/Header";
+import Header from "../components/Header/Header";
 
 function PageLayout() {
   return (
     <>
-      <div style={{ height: "100%" }}>
-        <div style={{ display: "flex", overflow: "none" }}>
-          <Header />
-          <Outlet />
-        </div>
+      <div className="container">
+        <Header />
+        <Outlet />
       </div>
     </>
   );

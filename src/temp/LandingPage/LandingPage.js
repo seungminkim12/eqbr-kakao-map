@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import MapArea from "../Map/MapArea";
 import SearchArea from "../Search/SearchArea";
 
-function LandingPage(props) {
+function Map(props) {
   const [markers, setMarkers] = useState([]);
   const [keepMarkers, setKeepMarkers] = useState([]);
+  const [isSearchResultReset, setIsSearchResultReset] = useState(false);
   // 검색결과 담는 state
   const [searchResult, setSearchResult] = useState([]);
   // 검색결과 pagination PageLayout
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    <div style={{ display: "flex", paddingTop: "50px" }}>
+    <div className="content-container">
       <SearchArea
         setMarkers={setMarkers}
         markers={markers}
@@ -20,6 +21,8 @@ function LandingPage(props) {
         setSearchResult={setSearchResult}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
+        isSearchResultReset={isSearchResultReset}
+        setIsSearchResultReset={setIsSearchResultReset}
       />
 
       <MapArea
@@ -33,4 +36,4 @@ function LandingPage(props) {
   );
 }
 
-export default LandingPage;
+export default Map;

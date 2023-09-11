@@ -7,7 +7,7 @@ export const eqbrCoord = new kakao.maps.LatLng(
   127.04499359218127
 ); //지도의 중심좌표.
 
-const mapOptions = {
+let mapOptions = {
   //지도를 생성할 때 필요한 기본 옵션
   center: eqbrCoord,
   level: 3, //지도의 레벨(확대, 축소 정도)
@@ -20,16 +20,21 @@ const places = new window.kakao.maps.services.Places();
 
 let map = null;
 
+let KAKAO_MARKERS = [];
+
 // 카카오 api resonse status code
 export const getSearchResultSuccess = kakao.maps.services.Status.OK;
 export const getSearchResultNone = kakao.maps.services.Status.ZERO_RESULT;
 export const getSearchResultFail = kakao.maps.services.Status.ERROR;
 
 /**
- * 맵 그리는 함수
+ * 맵을 그리는 함수
  * @param {*} container
+ * @param {*} isImageMap 이미지맵 여부
  */
-export const createMap = (container) => {
+export const KAKAO_CREATE_MAP = (container, isImageMap) => {
+  mapOptions = isImageMap ? { ...mapOptions, draggable: false } : mapOptions;
+  console.log("container", container);
   map = new kakao.maps.Map(container.current, mapOptions);
   //지도 생성 및 객체 리턴
   const marker = new kakao.maps.Marker({
@@ -49,7 +54,8 @@ export const createMap = (container) => {
 export const KAKAO_SEARCH_PLACE_BY_KEYWORD = (
   keyword,
   callback,
-  searchOptions
+  searchOptions,
+  searchCall
 ) => {
   places.keywordSearch(keyword, callback, searchOptions, {
     useMapBounds: true,
@@ -64,7 +70,8 @@ export const KAKAO_SEARCH_PLACE_BY_KEYWORD = (
 export const KAKAO_SEARCH_PLACE_BY_CATEGORY = (
   category,
   callback,
-  searchOptions
+  searchOptions,
+  searchCall
 ) => {
   places.categorySearch(category, callback, searchOptions, {
     useMapBounds: true,
@@ -75,7 +82,8 @@ export const KAKAO_SEARCH_PLACE_BY_CATEGORY = (
  * 카카오맵에 마커 그리는 함수
  * @param {*} place
  */
-export const KAKAO_DISPLAY_MARKER = (place, cb) => {
+export const KAKAO_DISPLAY_MARKER = (place, cb, overlays) => {
+  console.log("place", place);
   const imagesize = new kakao.maps.Size(24, 35);
   const markerImg = new kakao.maps.MarkerImage(
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
@@ -84,7 +92,6 @@ export const KAKAO_DISPLAY_MARKER = (place, cb) => {
   const position = new kakao.maps.LatLng(+place.y, +place.x);
 
   bounds.extend(position);
-
   const marker = new kakao.maps.Marker({
     map,
     position,
@@ -92,20 +99,37 @@ export const KAKAO_DISPLAY_MARKER = (place, cb) => {
     image: markerImg,
     clickable: true,
   });
+  console.log("marker", marker);
 
-  KAKAO_SET_CUSTOMOVERLAY(place, marker, cb);
+  if (cb) {
+    KAKAO_MARKERS.push(marker);
+
+    KAKAO_SET_CUSTOMOVERLAY(place, marker, cb, overlays);
+  }
 
   map.setBounds(bounds);
 
   marker.setMap(map);
 };
 
-export const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb) => {
-  console.log("marker", marker);
+export const KAKAO_REMOVE_ALL_MARKER = () => {
+  if (KAKAO_MARKERS.length > 0) {
+    KAKAO_MARKERS.forEach((mk) => {
+      mk.setMap(null);
+    });
+    KAKAO_MARKERS = [];
+  }
+};
+
+/**
+ * 카카오맵에 오버레이 설정하는 함수
+ * @param {*} place
+ * @param {*} marker
+ * @param {*} cb
+ */
+export const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb, overlays) => {
   const overlayTemplate = getOverlayTemplate(place);
-  // const overlayTemplate = getOverlayTemplate(marker);
   const overlayCloseBtn = overlayTemplate.querySelector(".close");
-  console.log("overlayTemplate", overlayTemplate.querySelector(".close"));
   // 마커 위에 커스텀오버레이를 표시합니다
   // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
   const overlay = new kakao.maps.CustomOverlay({
@@ -116,15 +140,30 @@ export const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb) => {
 
   // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
   kakao.maps.event.addListener(marker, "click", function () {
+    const detailsNodes = document.getElementsByTagName("details");
+    for (let i = 0; i < detailsNodes.length; i++) {
+      detailsNodes[i].removeAttribute("open");
+    }
+    const detailsNode = document.getElementById(place.id).childNodes[0];
+    if (detailsNode) {
+      detailsNode.open = true;
+    }
     overlay.setMap(map);
   });
 
   overlay.setMap(null);
 
-  cb();
+  cb(overlay, marker);
 
   // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
   overlayCloseBtn.onclick = () => {
     overlay.setMap(null);
   };
+};
+
+export const KAKAO_DRAW_CUSTOMOVERLAY = (overlays, idx) => {
+  overlays.map((overlay) => {
+    overlay.setMap(null);
+  });
+  overlays[idx].setMap(map);
 };

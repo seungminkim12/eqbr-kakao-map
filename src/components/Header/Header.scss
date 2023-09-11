@@ -1,0 +1,20 @@
+// header
+// page-link header-items
+// header-items menu-btn
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  background: #00b4cc;
+}
+
+.header-items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 50px;
+}

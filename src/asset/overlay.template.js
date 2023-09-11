@@ -1,7 +1,14 @@
+import {
+  addPlaceInBookmark,
+  openKakaoMapDetail,
+  openKakaoMapNavigation,
+} from "../action/user_action";
+
 export const getOverlayTemplate = (place) => {
   //개선 필요
   const content = document.createElement("div");
   content.className = "wrap";
+  content.id = place.id;
   const infoDiv = document.createElement("div");
   infoDiv.className = "info";
 
@@ -25,7 +32,35 @@ export const getOverlayTemplate = (place) => {
   jibunDiv.innerText = place.address_name;
 
   const phoneDiv = document.createElement("div");
-  phoneDiv.className = place.phone;
+  phoneDiv.className = "phone";
+  phoneDiv.innerText = place.phone;
+
+  const overlayAddBmkButton = document.createElement("button");
+  overlayAddBmkButton.className = "overlay-buttons";
+  overlayAddBmkButton.innerText = "즐겨찾기";
+  overlayAddBmkButton.onclick = () => {
+    addPlaceInBookmark(place);
+  };
+
+  const overLayDetailButton = document.createElement("button");
+  overLayDetailButton.className = "overlay-buttons";
+  overLayDetailButton.innerText = "상세보기";
+  overLayDetailButton.onclick = () => {
+    openKakaoMapDetail(place);
+  };
+
+  const overLayNavButton = document.createElement("button");
+  overLayNavButton.className = "overlay-buttons";
+  overLayNavButton.innerText = "길찾기";
+  overLayNavButton.onclick = () => {
+    openKakaoMapNavigation(place);
+  };
+
+  const buttonsDiv = document.createElement("div");
+  buttonsDiv.className = "overlay-buttons-fam";
+  buttonsDiv.appendChild(overlayAddBmkButton);
+  buttonsDiv.appendChild(overLayDetailButton);
+  buttonsDiv.appendChild(overLayNavButton);
 
   titleDiv.appendChild(closeSpan);
   infoDiv.appendChild(titleDiv);
@@ -33,6 +68,8 @@ export const getOverlayTemplate = (place) => {
   descDiv.appendChild(phoneDiv);
   descDiv.appendChild(ellipDiv);
   descDiv.appendChild(jibunDiv);
+  descDiv.appendChild(buttonsDiv);
+
   overlayBody.appendChild(descDiv);
 
   infoDiv.appendChild(overlayBody);
