@@ -34,7 +34,6 @@ export const getSearchResultFail = kakao.maps.services.Status.ERROR;
  */
 export const KAKAO_CREATE_MAP = (container, isImageMap) => {
   mapOptions = isImageMap ? { ...mapOptions, draggable: false } : mapOptions;
-  console.log("container", container);
   map = new kakao.maps.Map(container.current, mapOptions);
   //지도 생성 및 객체 리턴
   const marker = new kakao.maps.Marker({
@@ -54,8 +53,7 @@ export const KAKAO_CREATE_MAP = (container, isImageMap) => {
 export const KAKAO_SEARCH_PLACE_BY_KEYWORD = (
   keyword,
   callback,
-  searchOptions,
-  searchCall
+  searchOptions
 ) => {
   places.keywordSearch(keyword, callback, searchOptions, {
     useMapBounds: true,
@@ -70,8 +68,7 @@ export const KAKAO_SEARCH_PLACE_BY_KEYWORD = (
 export const KAKAO_SEARCH_PLACE_BY_CATEGORY = (
   category,
   callback,
-  searchOptions,
-  searchCall
+  searchOptions
 ) => {
   places.categorySearch(category, callback, searchOptions, {
     useMapBounds: true,
@@ -83,7 +80,6 @@ export const KAKAO_SEARCH_PLACE_BY_CATEGORY = (
  * @param {*} place
  */
 export const KAKAO_DISPLAY_MARKER = (place, cb, overlays) => {
-  console.log("place", place);
   const imagesize = new kakao.maps.Size(24, 35);
   const markerImg = new kakao.maps.MarkerImage(
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
@@ -99,7 +95,6 @@ export const KAKAO_DISPLAY_MARKER = (place, cb, overlays) => {
     image: markerImg,
     clickable: true,
   });
-  console.log("marker", marker);
 
   if (cb) {
     KAKAO_MARKERS.push(marker);

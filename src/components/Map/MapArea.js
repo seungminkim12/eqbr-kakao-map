@@ -1,9 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import {
-  KAKAO_CREATE_MAP,
-  KAKAO_DISPLAY_MARKER,
-  KAKAO_SET_CUSTOMOVERLAY,
-} from "../../module/kakao-api";
+import { KAKAO_CREATE_MAP, KAKAO_DISPLAY_MARKER } from "../../module/kakao-api";
 
 import "./MapArea.scss";
 
@@ -27,7 +23,6 @@ const MapArea = (props) => {
   useEffect(() => {
     //렌더링 시 커스텀 오버레이 열리는 현상 방지
     if (props.keepMarkers && props.keepMarkers.length > 0) {
-      console.log("MA props.keepMarkers", props.keepMarkers);
       // keepMarkers.forEach((keepMarker) => {
       //   console.log("keepMarker", keepMarker);
       //   keepMarker.setMap(null);
@@ -35,10 +30,8 @@ const MapArea = (props) => {
       // setKeepMarkers([]);
     }
     //
-    console.log("props.markers", props.markers);
     props.markers &&
       props.markers.map((marker) => {
-        console.log("MA UF marker", marker);
         // props.setKeepMarkers([...props.keepMarkers, marker]);
         KAKAO_DISPLAY_MARKER(marker, setOverlay, props.overLays);
       });

@@ -21,7 +21,6 @@ function Bookmark() {
   const [totalPage, setTotalPage] = useState(1);
   const [isLoadMore, setIsLoadMore] = useState(false);
 
-  console.log("bookmarkList", bookmarkList);
   //이미지 지도 컨테이너
   const staticMapContainer = useRef(null);
 
@@ -44,7 +43,7 @@ function Bookmark() {
 
     //페이징 함수
     handlePaging(sortedBookmark);
-    console.log("sortedBookmark", sortedBookmark);
+
     setSavedBookmark(sortedBookmark);
   };
 
@@ -81,16 +80,14 @@ function Bookmark() {
 
   useEffect(() => {
     handleBookmark();
-    console.log("staticMapContainer", staticMapContainer);
     /**
      * 이미지 지도
      */
     KAKAO_CREATE_MAP(staticMapContainer, true);
 
     // const markerList = JSON.parse(localStorage.getItem("eqbrFavoriteSorted"));
-    const markerList = savedBookmark;
-    console.log("savedBookmark", savedBookmark);
-    console.log("markerList", markerList);
+    // const markerList = savedBookmark;
+
     // markerList.map((bmk) => {
     //   console.log("bmk", bmk);
     //   KAKAO_DISPLAY_MARKER(bmk, null, null);

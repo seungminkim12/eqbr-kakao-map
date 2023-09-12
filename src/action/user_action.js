@@ -20,13 +20,8 @@ const eqbrX = "127.04499359218127";
  * @param {*} callback
  * @param {*} page
  */
-export const searchPlaceByKeyword = (keyword, callback, page, searchCall) => {
-  KAKAO_SEARCH_PLACE_BY_KEYWORD(
-    keyword,
-    callback,
-    { ...searchOptions, page },
-    searchCall
-  );
+export const searchPlaceByKeyword = (keyword, callback, page) => {
+  KAKAO_SEARCH_PLACE_BY_KEYWORD(keyword, callback, { ...searchOptions, page });
 };
 
 /**
@@ -35,16 +30,11 @@ export const searchPlaceByKeyword = (keyword, callback, page, searchCall) => {
  * @param {*} callback
  * @param {*} page
  */
-export const searchPlaceByCategory = (category, callback, page, searchCall) => {
-  KAKAO_SEARCH_PLACE_BY_CATEGORY(
-    category,
-    callback,
-    {
-      ...searchOptions,
-      page,
-    },
-    searchCall
-  );
+export const searchPlaceByCategory = (category, callback, page) => {
+  KAKAO_SEARCH_PLACE_BY_CATEGORY(category, callback, {
+    ...searchOptions,
+    page,
+  });
 };
 
 export const addPlaceInBookmark = (place) => {
@@ -75,8 +65,11 @@ export const addPlaceInBookmark = (place) => {
   );
 };
 
+/**
+ * 로컬스토리지에 저장되어 있는 북마크 지움
+ * @param {*} id
+ */
 export const removePlaceInBookmark = (id) => {
-  console.log("id", id);
   //저장되어 있는 북마크 가져옴
   const savedFavorData = JSON.parse(localStorage.getItem("eqbrFavorite"));
   if (savedFavorData) {

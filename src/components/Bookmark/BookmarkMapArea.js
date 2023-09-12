@@ -2,7 +2,6 @@ import React from "react";
 import "./BookmarkMapArea.scss";
 
 export default React.forwardRef(function BookmarkMapArea(props, ref) {
-  console.log("maparea ref", ref);
   return (
     <div className="imagemap-container">
       <div className="map">지도</div>

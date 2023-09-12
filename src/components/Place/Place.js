@@ -10,7 +10,6 @@ function Place(props) {
 
   //더보기 클릭 핸들러
   function moreInfoClickHandler(e) {
-    console.log("e.currentTarget.id", e.currentTarget.id);
     setDetailOpenId(e.currentTarget.id);
     getOverlayAfterClick(e.currentTarget.id, props.overlays);
   }
@@ -21,16 +20,6 @@ function Place(props) {
           {/* key 값이 안들어감 */}
           {props.searchResult && props.searchResult.length > 0 ? (
             props.searchResult.map((item, idx) => {
-              // return props.searchResult.length === idx + 1 ? (
-              //   <>
-              //     <div
-              //       ref={props.lastResultElementRef}
-              //       className="place-summary"
-              //     >
-              //       test
-              //     </div>
-              //   </>
-              // ) : (
               return (
                 <>
                   <div

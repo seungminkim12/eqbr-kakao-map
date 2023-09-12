@@ -5,18 +5,12 @@ import "./BookmarkArea.scss";
 function BookmarkArea(props) {
   const { bookmarkList } = props;
   const confirmDelBookmark = useRef(null);
-  console.log("props", props);
-  console.log("bookmarkList", bookmarkList);
 
   function deleteBookmarkBtnHandler(e, place) {
-    console.log("id", place.id);
-    console.log("confirmDelBookmark", confirmDelBookmark);
     if (place.id !== confirmDelBookmark.current) {
-      console.log("diff");
       e.target.innerText = "즐겨찾기 추가";
       confirmDelBookmark.current = place.id;
     } else {
-      console.log("same");
       e.target.innerText = "즐겨찾기 해제";
       confirmDelBookmark.current = null;
     }
@@ -24,7 +18,6 @@ function BookmarkArea(props) {
 
   useEffect(() => {
     return () => {
-      console.log("confirmDelBookmark", confirmDelBookmark);
       removePlaceInBookmark(confirmDelBookmark.current);
     };
   }, []);

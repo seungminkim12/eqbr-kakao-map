@@ -29,7 +29,6 @@ function SearchArea(props) {
   const scrollTarget = useRef(null);
 
   const timerDebounceRef = useRef(null);
-  console.log("props.searchResult", props.searchResult);
   //검색 input change 핸들러
   function onSearchIPChange(e) {
     //state 초기화 작업들
@@ -47,7 +46,6 @@ function SearchArea(props) {
   function searchClickHandler(e) {
     e.preventDefault();
 
-    console.log("searchInputValue", searchInputValue);
     if (!props.isSearchRequest) {
       props.setIsSearchRequest(true);
       searchPlaceByKeyword(
@@ -58,6 +56,16 @@ function SearchArea(props) {
       );
     }
   }
+
+  useEffect(() => {
+    //state 초기화 작업들
+    props.setMarkers([]);
+    props.setSearchResult([]);
+    props.setCurrentPage(1);
+    KAKAO_REMOVE_ALL_MARKER();
+    props.setIsSearchRequest(false);
+    setBtnActive();
+  }, [searchCategory]);
 
   function handleDebounceScroll(e) {
     const { scrollHeight, scrollTop, offsetHeight } = e.target;
