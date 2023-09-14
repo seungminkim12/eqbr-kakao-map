@@ -3,7 +3,7 @@ import {
   KAKAO_DRAW_CUSTOMOVERLAY,
   KAKAO_SEARCH_PLACE_BY_CATEGORY,
   KAKAO_SEARCH_PLACE_BY_KEYWORD,
-} from "../module/kakao-api";
+} from "../server/module/kakao-api";
 
 const searchOptions = {
   location: eqbrCoord,

@@ -1,9 +1,10 @@
 import React from "react";
-import "./App.scss";
-import Navigation from "./router/Navigation";
+import MainNavigator from "./view/navigation/MainNavigator";
+
+import "../src/view/styles/App.scss";
 
 function App() {
-  return <Navigation />;
+  return <MainNavigator />;
 }
 
 export default App;
