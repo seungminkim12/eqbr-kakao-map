@@ -32,7 +32,7 @@ function PlaceDetail(props) {
           <button
             className="place-button"
             onClick={() => {
-              bookmarkButtonHandler(props.place, props.setBookmark);
+              bookmarkButtonHandler(props.place);
             }}
           >
             즐겨찾기 추가

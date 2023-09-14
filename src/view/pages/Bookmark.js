@@ -17,9 +17,9 @@ function Bookmark() {
   const [bookmarkList, setBookmarkList] = useState([]);
   let firstContent = 1;
   const [lastContent, setLastContent] = useState(content);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
-  const [isLoadMore, setIsLoadMore] = useState(false);
+  const [currentBmkPage, setCurrentBmkPage] = useState(1);
+  // const [totalPage, setTotalPage] = useState(1);
+  // const [isLoadMore, setIsLoadMore] = useState(false);
 
   //이미지 지도 컨테이너
   const staticMapContainer = useRef(null);
@@ -39,7 +39,7 @@ function Bookmark() {
       return new Date(b.regDate) - new Date(a.regDate);
     });
     //페이징에 쓸 마지막 페이지 계산
-    setTotalPage(Math.floor(sortedBookmark.length / content));
+    // setTotalPage(Math.floor(sortedBookmark.length / content));
 
     //페이징 함수
     handlePaging(sortedBookmark);
@@ -53,7 +53,7 @@ function Bookmark() {
     setLastContent(lastContent + content);
     firstContent = lastContent - content;
 
-    setCurrentPage(currentPage + 1);
+    setCurrentBmkPage(currentBmkPage + 1);
     //솔팅 & 페이징된 북마크 state에 저장
     setBookmarkList([
       ...bookmarkList,
@@ -63,14 +63,14 @@ function Bookmark() {
 
   //더보기 버튼 클릭 핸들러
   const loadMoreButtonHandler = () => {
-    setIsLoadMore(true);
+    // setIsLoadMore(true);
 
     handlePaging(savedBookmark);
     savedBookmark.map((sb) => {
       // displayMarker(sb);
     });
 
-    setIsLoadMore(false);
+    // setIsLoadMore(false);
   };
 
   //북마크해제 버튼 핸들러

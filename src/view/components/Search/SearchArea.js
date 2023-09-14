@@ -2,23 +2,45 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import Category from "../Category/Category";
 import withSearchCB from "../HOC/withSearchCB";
 import Place from "../Place/Place";
-
-import "../../styles/SearchArea.scss";
-
 import {
   searchPlaceByCategory,
   searchPlaceByKeyword,
 } from "../../../action/user_action";
 import { KAKAO_REMOVE_ALL_MARKER } from "../../../server/module/kakao-api";
+import { useSelector } from "react-redux";
+// import { searchResult } from "../../../store/searchResults.js";
+
+import "../../styles/SearchArea.scss";
+import { searchResult } from "../../../store/searchResults";
+import { CATEGORY_OBJ } from "view/asset/category.type";
+import {
+  currentPage,
+  resetCurrentPage,
+  searchCategory,
+  searchKeyword,
+  searchOption,
+  setSearchKeyword,
+} from "store/searchOptions";
+import { storeDispatch } from "store/util";
+import { deleteSearchResults } from "store/searchResults";
+import searchOptionReset from "view/hooks/searchOptionReset";
 
 function SearchArea(props) {
-  console.log("searchArea", props);
-  const [searchInputValue, setSearchInputValue] = useState("");
-  //카테고리 키워드
-  const [searchCategory, setSearchCategory] = useState("");
+  //검색 키워드 selector
+  const searchKeywordValue = useSelector(searchKeyword);
+  //카테고리 selector
+  const searchCategoryValue = useSelector(searchCategory);
+  //검색결과 selector
+  const searchResults = useSelector(searchResult);
+  //검색 페이지 selector
+  const searchCurrentPage = useSelector(currentPage);
   //카테고리 버튼 클릭 체크
   const [btnActive, setBtnActive] = useState();
+
+  //input DOM
   const searchInputRef = useRef(null);
+
+  console.log("searchResults redux", searchResults);
 
   //검색버튼 dom
   const searchBtnRef = useRef(null);
@@ -30,13 +52,12 @@ function SearchArea(props) {
   function onSearchIPChange(e) {
     //state 초기화 작업들
     props.setMarkers([]);
-    props.setSearchResult([]);
-    props.setCurrentPage(1);
+    searchOptionReset();
     KAKAO_REMOVE_ALL_MARKER();
     props.setIsSearchRequest(false);
     setBtnActive();
 
-    setSearchInputValue(e.target.value);
+    storeDispatch(setSearchKeyword(e.target.value));
   }
 
   //검색 버튼 클릭 핸들러
@@ -46,9 +67,9 @@ function SearchArea(props) {
     if (!props.isSearchRequest) {
       props.setIsSearchRequest(true);
       searchPlaceByKeyword(
-        searchInputValue,
+        searchKeywordValue,
         props.placeSearchCB,
-        props.currentPage,
+        searchCurrentPage,
         props.isSearchRequest
       );
     }
@@ -57,12 +78,23 @@ function SearchArea(props) {
   useEffect(() => {
     //state 초기화 작업들
     props.setMarkers([]);
-    props.setSearchResult([]);
-    props.setCurrentPage(1);
+    searchOptionReset();
     KAKAO_REMOVE_ALL_MARKER();
     props.setIsSearchRequest(false);
     setBtnActive();
-  }, [searchCategory]);
+  }, []);
+
+  useEffect(() => {
+    console.log("UF ");
+    if (searchCategoryValue) {
+      // 카테고리로 검색하는 유저 액션
+      searchPlaceByCategory(
+        searchCategoryValue,
+        props.placeSearchCB,
+        searchCurrentPage
+      );
+    }
+  }, [searchCategoryValue]);
 
   function handleDebounceScroll(e) {
     const { scrollHeight, scrollTop, offsetHeight } = e.target;
@@ -74,18 +106,18 @@ function SearchArea(props) {
       if (scrollHeight <= scrollTop + offsetHeight) {
         if (!props.isSearchRequest) {
           props.setIsSearchRequest(true);
-          if (searchInputValue) {
+          if (searchKeywordValue) {
             searchPlaceByKeyword(
-              searchInputValue,
+              searchKeywordValue,
               props.placeSearchCB,
-              props.currentPage,
+              searchCurrentPage,
               props.isSearchRequest
             );
           } else {
             searchPlaceByCategory(
-              searchCategory,
+              searchCategoryValue,
               props.placeSearchCB,
-              props.currentPage,
+              searchCurrentPage,
               props.isSearchRequest
             );
           }
@@ -104,16 +136,16 @@ function SearchArea(props) {
         <div className="search-form">
           <input
             type="text"
-            placeholder={!searchInputValue ? "키워드를 입력해주세요" : ""}
+            placeholder={!searchKeywordValue ? "키워드를 입력해주세요" : ""}
             onChange={onSearchIPChange}
             ref={searchInputRef}
-            value={searchInputValue}
+            value={searchKeywordValue}
             className="search-bar"
           />
           <button
             onClick={searchClickHandler}
             ref={searchBtnRef}
-            disabled={!searchInputValue}
+            disabled={!searchKeywordValue}
             className="search-btn"
           >
             <svg
@@ -127,33 +159,41 @@ function SearchArea(props) {
           </button>
         </div>
         <div className="category-form">
-          <Category
-            searchResult={props.searchResult}
-            setSearchResult={props.setSearchResult}
-            markers={props.markers}
-            setMarkers={props.setMarkers}
-            isSearched={props.isSearched}
-            currentPage={props.currentPage}
-            setCurrentPage={props.setCurrentPage}
-            isSearchRequest={props.isSearchRequest}
-            setIsSearchRequest={props.setIsSearchRequest}
-            setSearchInputValue={setSearchInputValue}
-            btnActive={btnActive}
-            setBtnActive={setBtnActive}
-            searchCategory={searchCategory}
-            setSearchCategory={setSearchCategory}
-          />
+          {Object.entries(CATEGORY_OBJ).map(([id, value], idx) => {
+            return (
+              <Category
+                markers={props.markers}
+                setMarkers={props.setMarkers}
+                isSearched={props.isSearched}
+                isSearchRequest={props.isSearchRequest}
+                setIsSearchRequest={props.setIsSearchRequest}
+                setBtnActive={setBtnActive}
+                key={id}
+                id={id}
+                idx={idx}
+                value={value}
+              />
+            );
+          })}
         </div>
         <div
           className="scroll-container"
           // ref={scrollTarget}
         >
-          <Place
-            searchResult={props.searchResult}
-            setSearchResult={props.setSearchResult}
-            isSearched={props.isSearched}
-            overlays={props.overlays}
-          />
+          <div className="scroll-list-container">
+            <div className="search-list">
+              {/* key 값이 안들어감 */}
+              {searchResults && searchResults.length > 0 ? (
+                searchResults.map((item, idx) => {
+                  return <Place item={item} idx={idx} key={item.id} />;
+                })
+              ) : props.isSearched ? (
+                <div> 검색 결과가 없습니다.</div>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </>
