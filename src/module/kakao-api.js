@@ -117,12 +117,13 @@ export const KAKAO_REMOVE_ALL_MARKER = () => {
 };
 
 /**
- * 카카오맵에 오버레이 설정하는 함수
+ * 카카오맵에 오버레이 설정하는 함수x
  * @param {*} place
  * @param {*} marker
  * @param {*} cb
  */
-export const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb, overlays) => {
+// export
+const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb, overlays) => {
   const overlayTemplate = getOverlayTemplate(place);
   const overlayCloseBtn = overlayTemplate.querySelector(".close");
   // 마커 위에 커스텀오버레이를 표시합니다

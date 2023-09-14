@@ -1,8 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  openKakaoMapDetail,
-  openKakaoMapNavigation,
-} from "../action/user_action";
 import BookmarkArea from "../components/Bookmark/BookmarkArea";
 import BookmarkMapArea from "../components/Bookmark/BookmarkMapArea";
 import { KAKAO_CREATE_MAP, KAKAO_DISPLAY_MARKER } from "../module/kakao-api";

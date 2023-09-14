@@ -8,11 +8,7 @@ import {
 } from "../../action/user_action";
 
 import "./SearchArea.scss";
-import {
-  KAKAO_DISPLAY_MARKER,
-  KAKAO_REMOVE_ALL_MARKER,
-  KAKAO_REMOVE_MARKER,
-} from "../../module/kakao-api";
+import { KAKAO_REMOVE_ALL_MARKER } from "../../module/kakao-api";
 
 function SearchArea(props) {
   console.log("searchArea", props);

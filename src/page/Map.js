@@ -4,8 +4,8 @@ import SearchArea from "../components/Search/SearchArea";
 import "./Map.scss";
 
 function Map(props) {
-  //marker 들의 장소 데이터
-  const [markersData, setMarkersData] = useState([]);
+  // //marker 들의 장소 데이터
+  // const [markersData, setMarkersData] = useState([]);
   //marker 객체
   const [markers, setMarkers] = useState([]);
   const [keepMarkers, setKeepMarkers] = useState([]);
@@ -24,8 +24,8 @@ function Map(props) {
       <SearchArea
         setMarkers={setMarkers}
         markers={markers}
-        markersData={markersData}
-        setMarkersData={setMarkersData}
+        // markersData={markersData}
+        // setMarkersData={setMarkersData}
         bookmark={props.bookmark}
         searchResult={searchResult}
         setSearchResult={setSearchResult}
