@@ -7,10 +7,10 @@ import searchOptionsSlice from "../searchOptions";
 
 export const store = configureStore({
   reducer: {
-    markers: markersSlice,
-    searchResults: searchResultsSlice,
+    // markers: markersSlice,
+    // searchResults: searchResultsSlice,
     bookmarks: bookmarksSlice,
-    searchOptions: searchOptionsSlice,
+    // searchOptions: searchOptionsSlice,
   },
 });
 

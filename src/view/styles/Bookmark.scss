@@ -3,20 +3,20 @@
   height: 100vh;
   overflow: auto;
 }
-.bookmark-title-container h1 {
-  color: black;
-}
 .bookmark-title-container {
   display: flex;
   justify-content: center;
+}
+.bookmark-title {
+  color: black;
 }
 .bookmark-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   width: 100%;
-  //   height: 100%;
+  // height: 100%;
 }
 
 #loadMoreButton {
@@ -29,4 +29,37 @@
   font-weight: 600;
   transition: 0.25s;
   font-family: "Gamja Flower", cursive;
+}
+
+.no-bookmark-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 100px;
+}
+
+.no-bookmark-title-section {
+}
+
+.no-bookmark-button-section {
+  margin-top: 200px;
+}
+
+.no-bookmark-button {
+  position: relative;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #6aafe6;
+  box-shadow: 0 15px 35px #6aafe6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.25s;
+  font-family: "Gamja Flower", cursive;
+}
+.no-bookmark-button:hover {
+  background-color: #6aafe6;
+  color: #d4dfe6;
 }

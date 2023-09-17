@@ -1,8 +1,9 @@
 import {
+  addBookmarkAction,
   addPlaceInBookmark,
   openKakaoMapDetail,
   openKakaoMapNavigation,
-} from "../../action/user_action";
+} from "../../action/userAction";
 
 export const getOverlayTemplate = (place) => {
   //개선 필요
@@ -39,7 +40,7 @@ export const getOverlayTemplate = (place) => {
   overlayAddBmkButton.className = "overlay-buttons";
   overlayAddBmkButton.innerText = "즐겨찾기";
   overlayAddBmkButton.onclick = () => {
-    addPlaceInBookmark(place);
+    addBookmarkAction(place);
   };
 
   const overLayDetailButton = document.createElement("button");

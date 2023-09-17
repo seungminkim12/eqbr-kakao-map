@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import {
-  addPlaceInBookmark,
+  addBookmarkAction,
   openKakaoMapDetail,
   openKakaoMapNavigation,
-} from "../../../action/user_action";
+} from "../../../action/userAction";
 
 import "../../styles/PlaceDetail.scss";
 
 function PlaceDetail(props) {
   //북마크 버튼 핸들러
   function bookmarkButtonHandler(place) {
-    addPlaceInBookmark(place);
+    addBookmarkAction(place);
   }
 
   return (

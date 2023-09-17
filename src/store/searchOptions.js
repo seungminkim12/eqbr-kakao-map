@@ -23,7 +23,6 @@ export const searchOptionsSlice = createSlice({
       state.searchKeyword = "";
     },
     setSearchCategory: (state, action) => {
-      console.log("setCate", action);
       state.searchCategory = action.payload;
     },
     resetSearchCategory: (state) => {
@@ -33,9 +32,9 @@ export const searchOptionsSlice = createSlice({
 });
 
 // //Selector
-export const searchKeyword = (state) => state.searchOptions.searchKeyword;
-export const searchCategory = (state) => state.searchOptions.searchCategory;
-export const currentPage = (state) => state.searchOptions.currentPage;
+// export const searchKeyword = (state) => state.searchOptions.searchKeyword;
+// export const searchCategory = (state) => state.searchOptions.searchCategory;
+// export const currentPage = (state) => state.searchOptions.currentPage;
 
 //Action
 export const {

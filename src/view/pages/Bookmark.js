@@ -7,6 +7,9 @@ import {
 } from "../../server/module/kakao-api";
 
 import "../styles/Bookmark.scss";
+import { goToMapAction } from "../../action/userAction";
+import { useNavigate } from "react-router-dom";
+import { displayMarkerAction, renderMapAction } from "action/mapAction";
 
 function Bookmark() {
   //저장된 북마크
@@ -18,18 +21,18 @@ function Bookmark() {
   let firstContent = 1;
   const [lastContent, setLastContent] = useState(content);
   const [currentBmkPage, setCurrentBmkPage] = useState(1);
-  // const [totalPage, setTotalPage] = useState(1);
-  // const [isLoadMore, setIsLoadMore] = useState(false);
 
   //이미지 지도 컨테이너
   const staticMapContainer = useRef(null);
+
+  const navigate = useNavigate();
 
   /**
    * 북마크
    */
   const handleBookmark = () => {
     //북마크 가져옴
-    bookmark = JSON.parse(localStorage.getItem("eqbrFavorite"));
+    bookmark = JSON.parse(localStorage.getItem("eqbrBookmark"));
 
     if (!bookmark || bookmark.length < 0) {
       return;
@@ -78,60 +81,85 @@ function Bookmark() {
     console.log("bmkid", bmkid);
   }
 
+  function noBmkBtnHandler() {
+    navigate("/map");
+  }
+
   useEffect(() => {
     handleBookmark();
     /**
      * 이미지 지도
      */
-    KAKAO_CREATE_MAP(staticMapContainer, true);
+    // console.log("bookmarkList", bookmarkList);
+    // bookmarkList.length > 0 && renderMapAction(staticMapContainer, true);
 
-    // const markerList = JSON.parse(localStorage.getItem("eqbrFavoriteSorted"));
-    // const markerList = savedBookmark;
+    // // const markerList = JSON.parse(localStorage.getItem("eqbrFavoriteSorted"));
+    // // const markerList = savedBookmark;
 
-    // markerList.map((bmk) => {
-    //   console.log("bmk", bmk);
-    //   KAKAO_DISPLAY_MARKER(bmk, null, null);
+    // bookmarkList.map((bmk) => {
+    //   //   console.log("bmk", bmk);
+    //   displayMarkerAction(bmk, null, null);
     // });
   }, []);
 
   useEffect(() => {
-    bookmarkList.map((bmk) => {
-      KAKAO_DISPLAY_MARKER(bmk, null, null);
-    });
+    // handleBookmark();
+    bookmarkList.length > 0 && renderMapAction(staticMapContainer, true);
+    bookmarkList.length > 0 &&
+      bookmarkList.map((bmk) => {
+        // KAKAO_DISPLAY_MARKER(bmk, null, null);
+        displayMarkerAction(bmk, true);
+      });
   }, [bookmarkList]);
 
   return (
     <>
       <div className="bmk-content-container">
-        {bookmarkList && bookmarkList.length > 0 ? (
+        {bookmarkList && bookmarkList.length > 0 && (
           <div>
             <div className="bookmark-title-container">
-              <h1>즐겨찾기</h1>
+              <h1 className="bookmark-title">즐겨찾기</h1>
             </div>
           </div>
-        ) : (
-          ""
         )}
 
         <div className="bookmark-container">
-          <BookmarkArea bookmarkList={bookmarkList} />
-          {bookmarkList &&
-          bookmarkList.length >= 10 &&
-          savedBookmark.length !== bookmarkList.length ? (
-            <button
-              id="loadMoreButton"
-              onClick={() => {
-                loadMoreButtonHandler();
-              }}
-            >
-              더보기
-            </button>
+          {bookmarkList && bookmarkList.length > 0 ? (
+            bookmarkList.map((bmk, idx) => {
+              return <BookmarkArea bmk={bmk} key={bmk.id} idx={idx} />;
+            })
           ) : (
-            ""
+            <div className="no-bookmark-container">
+              <div className="no-bookmark-title-section">
+                <h1 className="bookmark-title">
+                  즐겨찾기에 추가된 장소가 없습니다.
+                </h1>
+              </div>
+              <div className="no-bookmark-button-section">
+                <button
+                  className="no-bookmark-button"
+                  onClick={noBmkBtnHandler}
+                >
+                  추가하러 가기
+                </button>
+              </div>
+            </div>
           )}
+          {bookmarkList.length >= 10 &&
+            savedBookmark.length !== bookmarkList.length && (
+              <button
+                id="loadMoreButton"
+                onClick={() => {
+                  loadMoreButtonHandler();
+                }}
+              >
+                더보기
+              </button>
+            )}
         </div>
-
-        <BookmarkMapArea ref={staticMapContainer} />
+        {bookmarkList && bookmarkList.length > 0 && (
+          <BookmarkMapArea ref={staticMapContainer} />
+        )}
       </div>
     </>
   );

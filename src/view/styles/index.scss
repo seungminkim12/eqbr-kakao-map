@@ -41,6 +41,7 @@ h1 {
   font-size: 12px;
   font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
   line-height: 1.5;
+  z-index: 999 !important;
 }
 .wrap * {
   padding: 0;

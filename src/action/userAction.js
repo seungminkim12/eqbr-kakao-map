@@ -1,9 +1,13 @@
 import {
+  searchPlaceByCategoryParser,
+  searchPlaceByKeywordParser,
+} from "parser/userParser";
+import { storeDispatch, storeState } from "../store/util/index";
+import {
   eqbrCoord,
   KAKAO_DRAW_CUSTOMOVERLAY,
-  KAKAO_SEARCH_PLACE_BY_CATEGORY,
-  KAKAO_SEARCH_PLACE_BY_KEYWORD,
 } from "../server/module/kakao-api";
+import { addBookmarks, savedBookmark } from "store/bookmarks";
 
 const searchOptions = {
   location: eqbrCoord,
@@ -20,8 +24,9 @@ const eqbrX = "127.04499359218127";
  * @param {*} callback
  * @param {*} page
  */
-export const searchPlaceByKeyword = (keyword, callback, page) => {
-  KAKAO_SEARCH_PLACE_BY_KEYWORD(keyword, callback, { ...searchOptions, page });
+export const searchPlaceByKeywordAction = async (keyword, page) => {
+  const result = await searchPlaceByKeywordParser(keyword, page);
+  return result ? result : null;
 };
 
 /**
@@ -30,39 +35,50 @@ export const searchPlaceByKeyword = (keyword, callback, page) => {
  * @param {*} callback
  * @param {*} page
  */
-export const searchPlaceByCategory = (category, callback, page) => {
-  KAKAO_SEARCH_PLACE_BY_CATEGORY(category, callback, {
-    ...searchOptions,
-    page,
-  });
+export const searchPlaceByCategoryAction = async (category, page) => {
+  const result = await searchPlaceByCategoryParser(category, page);
+  return result ? result : null;
 };
 
-export const addPlaceInBookmark = (place) => {
+/**
+ * 북마크에 추가하는 유저 액션
+ * @param {\} place
+ * @returns
+ */
+export const addBookmarkAction = (place) => {
   //저장되어 있는 북마크 가져옴
-  const savedFavorData = JSON.parse(localStorage.getItem("eqbrFavorite"));
-
+  const savedBookmarkData = JSON.parse(localStorage.getItem("eqbrBookmark"));
+  // const savedBookmarkData = savedBookmark(storeState());
   //하나도 없는 case
-  if (!savedFavorData) {
+  if (savedBookmarkData.length <= 0) {
     localStorage.setItem(
-      "eqbrFavorite",
+      "eqbrBookmark",
       JSON.stringify([{ ...place, regDate: new Date() }])
     );
+
+    // storeDispatch(addBookmarks({ ...place, regDate: new Date().toString() }));
     return;
   }
   // 즐겨찾기에 추가한 데이터
   const id = place.id;
   // 기존 데이터와 중복 비교
-  const checkId = savedFavorData.findIndex((data) => id === data.id);
+  const checkId = savedBookmarkData.findIndex((data) => id === data.id);
   //중복 있을때 기존 데이터 삭제
   if (checkId >= 0) {
-    savedFavorData.splice(checkId, 1);
+    savedBookmarkData.splice(checkId, 1);
   }
 
   //중복 제거한 기존 데이터 + 새로 추가할 데이터 추가
   localStorage.setItem(
-    "eqbrFavorite",
-    JSON.stringify([...savedFavorData, { ...place, regDate: new Date() }])
+    "eqbrBookmark",
+    JSON.stringify([...savedBookmarkData, { ...place, regDate: new Date() }])
   );
+  // storeDispatch(
+  //   addBookmarks([
+  //     ...savedBookmarkData,
+  //     { ...place, regDate: new Date().toString() },
+  //   ])
+  // );
 };
 
 /**
@@ -71,13 +87,13 @@ export const addPlaceInBookmark = (place) => {
  */
 export const removePlaceInBookmark = (id) => {
   //저장되어 있는 북마크 가져옴
-  const savedFavorData = JSON.parse(localStorage.getItem("eqbrFavorite"));
+  const savedFavorData = JSON.parse(localStorage.getItem("eqbrBookmark"));
   if (savedFavorData) {
     const checkId = savedFavorData.findIndex((data) => id === data.id);
     if (checkId >= 0) {
       savedFavorData.splice(checkId, 1);
     }
-    localStorage.setItem("eqbrFavorite", JSON.stringify([...savedFavorData]));
+    localStorage.setItem("eqbrBookmark", JSON.stringify([...savedFavorData]));
   }
 };
 
@@ -100,16 +116,27 @@ export const openKakaoMapNavigation = (place) => {
 };
 
 /**
+ * 북마크 추가하러가기 액션
+ */
+export const goToMapAction = () => {
+  // navigate("/map");
+  // // window.history.pushState("", "", "/map");
+  // window.location("/map");
+  // useGoToPage("/map");
+};
+
+/**
  * Place 영역 클릭시 해당되는 오버레이 띄우기
  * @param {*} currentId
  * @param {*} overlays
  */
 export const getOverlayAfterClick = (currentId, overlays) => {
   let currentIdx = null;
-  overlays.forEach((overlay, idx) => {
-    if (overlay.cc.id === currentId) {
-      currentIdx = idx;
-    }
-  });
+  overlays &&
+    overlays.forEach((overlay, idx) => {
+      if (overlay.cc.id === currentId) {
+        currentIdx = idx;
+      }
+    });
   KAKAO_DRAW_CUSTOMOVERLAY(overlays, currentIdx);
 };

@@ -1,4 +1,4 @@
-import { getOverlayTemplate } from "../../view/asset/overlay.template";
+import { getOverlayTemplate } from "view/components/overlay.template";
 
 const { kakao } = window;
 
@@ -22,17 +22,19 @@ let map = null;
 
 let KAKAO_MARKERS = [];
 
+let KAKAO_OVERLAYS = [];
+
 // 카카오 api resonse status code
-export const getSearchResultSuccess = kakao.maps.services.Status.OK;
-export const getSearchResultNone = kakao.maps.services.Status.ZERO_RESULT;
-export const getSearchResultFail = kakao.maps.services.Status.ERROR;
+export const GET_SEARCH_RESULT_SUCCESS = kakao.maps.services.Status.OK;
+export const GET_SEARCH_RESULT_NONE = kakao.maps.services.Status.ZERO_RESULT;
+export const GET_SEARCH_RESULT_FAIL = kakao.maps.services.Status.ERROR;
 
 /**
  * 맵을 그리는 함수
  * @param {*} container
  * @param {*} isImageMap 이미지맵 여부
  */
-export const KAKAO_CREATE_MAP = (container, isImageMap) => {
+export const renderMap = (container, isImageMap) => {
   mapOptions = isImageMap ? { ...mapOptions, draggable: false } : mapOptions;
   map = new kakao.maps.Map(container.current, mapOptions);
   //지도 생성 및 객체 리턴
@@ -41,7 +43,6 @@ export const KAKAO_CREATE_MAP = (container, isImageMap) => {
     position: eqbrCoord,
     clickable: true,
   });
-
   marker.setMap(map);
 };
 
@@ -50,14 +51,23 @@ export const KAKAO_CREATE_MAP = (container, isImageMap) => {
  * @param {*} keyword
  * @param {*} callback
  */
-export const KAKAO_SEARCH_PLACE_BY_KEYWORD = (
-  keyword,
-  callback,
-  searchOptions
-) => {
-  places.keywordSearch(keyword, callback, searchOptions, {
-    useMapBounds: true,
-  });
+const searchPlaceByKeyword = async (keyword, searchOptions) => {
+  const promisedKeywordSearch = () => {
+    return new Promise((resolve, reject) => {
+      places.keywordSearch(
+        keyword,
+        (data, status, pagination) => {
+          resolve({ data, status, pagination });
+        },
+        searchOptions,
+        {
+          useMapBounds: true,
+        }
+      );
+    });
+  };
+  const result = await promisedKeywordSearch();
+  return result;
 };
 
 /**
@@ -65,21 +75,32 @@ export const KAKAO_SEARCH_PLACE_BY_KEYWORD = (
  * @param {*} category
  * @param {*} callback
  */
-export const KAKAO_SEARCH_PLACE_BY_CATEGORY = (
-  category,
-  callback,
-  searchOptions
-) => {
-  places.categorySearch(category, callback, searchOptions, {
-    useMapBounds: true,
-  });
+const searchPlaceByCategory = async (category, searchOptions) => {
+  const promisedCategorySearch = () => {
+    return new Promise((resolve, reject) => {
+      places.categorySearch(
+        category,
+        (data, status, pagination) => {
+          resolve({ data, status, pagination });
+        },
+        searchOptions,
+        {
+          useMapBounds: true,
+        }
+      );
+    });
+  };
+
+  const result = await promisedCategorySearch();
+  return result;
 };
 
 /**
  * 카카오맵에 마커 그리는 함수
  * @param {*} place
  */
-export const KAKAO_DISPLAY_MARKER = (place, cb, overlays) => {
+// cb, overlays
+export const displayMarker = (place, isImageMap) => {
   const imagesize = new kakao.maps.Size(24, 35);
   const markerImg = new kakao.maps.MarkerImage(
     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
@@ -95,24 +116,31 @@ export const KAKAO_DISPLAY_MARKER = (place, cb, overlays) => {
     image: markerImg,
     clickable: true,
   });
-
-  if (cb) {
+  if (!isImageMap) {
     KAKAO_MARKERS.push(marker);
-
-    KAKAO_SET_CUSTOMOVERLAY(place, marker, cb, overlays);
+    setOverlay(place, marker);
   }
 
+  // , cb, overlays
+
+  // if (cb) {
+
+  // }
   map.setBounds(bounds);
 
   marker.setMap(map);
 };
 
-export const KAKAO_REMOVE_ALL_MARKER = () => {
+export const resetMarker = () => {
   if (KAKAO_MARKERS.length > 0) {
     KAKAO_MARKERS.forEach((mk) => {
       mk.setMap(null);
     });
+    KAKAO_OVERLAYS.forEach((ov) => {
+      ov.setMap(null);
+    });
     KAKAO_MARKERS = [];
+    KAKAO_OVERLAYS = [];
   }
 };
 
@@ -122,16 +150,22 @@ export const KAKAO_REMOVE_ALL_MARKER = () => {
  * @param {*} marker
  * @param {*} cb
  */
-// export
-const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb, overlays) => {
+
+const setOverlay = (place, marker, overlays) => {
+  // const testFunc = () => {
+  //   return <testoverlay />;
+  // };
+  // const testTemplage = testFunc();
   const overlayTemplate = getOverlayTemplate(place);
   const overlayCloseBtn = overlayTemplate.querySelector(".close");
   // 마커 위에 커스텀오버레이를 표시합니다
   // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
   const overlay = new kakao.maps.CustomOverlay({
     content: overlayTemplate,
+    // content: testTemplage,
     map,
     position: marker.getPosition(),
+    zIndex: 99,
   });
 
   // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
@@ -144,12 +178,18 @@ const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb, overlays) => {
     if (detailsNode) {
       detailsNode.open = true;
     }
+    KAKAO_OVERLAYS.forEach((ov) => {
+      ov.setMap(null);
+    });
     overlay.setMap(map);
   });
 
   overlay.setMap(null);
 
-  cb(overlay, marker);
+  KAKAO_OVERLAYS.push(overlay);
+
+  // , cb
+  // cb(overlay, marker);
 
   // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
   overlayCloseBtn.onclick = () => {
@@ -158,8 +198,19 @@ const KAKAO_SET_CUSTOMOVERLAY = (place, marker, cb, overlays) => {
 };
 
 export const KAKAO_DRAW_CUSTOMOVERLAY = (overlays, idx) => {
+  if (!overlays || overlays.length <= 0) {
+    return;
+  }
   overlays.map((overlay) => {
     overlay.setMap(null);
   });
   overlays[idx].setMap(map);
+};
+
+export {
+  renderMap as renderMapFromServer,
+  displayMarker as displayMarkerFromServer,
+  resetMarker as resetMarkerFromServer,
+  searchPlaceByCategory as searchPlaceByCategoryFromServer,
+  searchPlaceByKeyword as searchPlaceByKeywordFromServer,
 };

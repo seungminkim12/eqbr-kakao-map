@@ -1,27 +1,24 @@
-import React, { useRef, useEffect, useState } from "react";
-import {
-  KAKAO_CREATE_MAP,
-  KAKAO_DISPLAY_MARKER,
-} from "../../../server/module/kakao-api";
+import { displayMarkerAction, renderMapAction } from "action/mapAction";
+import React, { useRef, useEffect, useState, useContext } from "react";
+import { SearchResultsContext } from "view/pages/Map";
 
 import "../../styles/MapArea.scss";
+import Marker from "../Marker/Marker";
 
 const MapArea = (props) => {
-  console.log("map Area", props);
-
   //지도를 담을 영역의 DOM 레퍼런스
   const container = useRef(null);
-  // const [keepMarkers, setKeepMarkers] = useState([]);
+  const { searchResults } = useContext(SearchResultsContext);
 
   //eqbr 마커 생성을 위한 useEffect
   useEffect(() => {
-    KAKAO_CREATE_MAP(container, false);
+    renderMapAction(container, false);
   }, []);
 
-  const setOverlay = (overlay, keepMarkers) => {
-    // keepMarkers = overlay;
-    props.setOverlays((prev) => [...prev, overlay]);
-  };
+  // const setOverlay = (overlay, keepMarkers) => {
+  //   // keepMarkers = overlay;
+  //   props.setOverlays((prev) => [...prev, overlay]);
+  // };
 
   useEffect(() => {
     //렌더링 시 커스텀 오버레이 열리는 현상 방지
@@ -33,14 +30,18 @@ const MapArea = (props) => {
       // setKeepMarkers([]);
     }
     //
-    props.markers &&
-      props.markers.map((marker) => {
-        // props.setKeepMarkers([...props.keepMarkers, marker]);
-        KAKAO_DISPLAY_MARKER(marker, setOverlay, props.overLays);
-      });
-  }, [props.markers]);
 
-  return <div className="map-container" ref={container}></div>;
+    searchResults &&
+      searchResults.map((searchResult) => {
+        displayMarkerAction(searchResult, props.setOverlay, props.overlays);
+      });
+  }, [searchResults]);
+
+  return (
+    <>
+      <div className="map-container" ref={container}></div>
+    </>
+  );
 };
 
 export default MapArea;

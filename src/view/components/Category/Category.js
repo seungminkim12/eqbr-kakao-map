@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react";
-
-import withSearchCB from "../HOC/withSearchCB";
-import { KAKAO_REMOVE_ALL_MARKER } from "../../../server/module/kakao-api";
+import { resetMarkerAction } from "action/mapAction";
+import React, { useState, useEffect, useContext } from "react";
+import { SearchResultsContext } from "view/pages/Map";
 
 import "../../styles/Category.scss";
-import { storeDispatch } from "store/util";
-import { resetCurrentPage, setSearchCategory } from "store/searchOptions";
-import searchOptionReset from "view/hooks/searchOptionReset";
 
 function Category(props) {
+  const { setSearchResults } = useContext(SearchResultsContext);
   //카테고리 버튼 클릭 핸들러
   function cateBtnClickHandler(e) {
-    //초기화 작업
-    searchOptionReset();
-
+    //카테고리 버튼 클릭 체크
     props.setBtnActive(+e.target.value);
-    storeDispatch(setSearchCategory(e.target.id));
+    props.setSearchCategoryValue(e.target.id);
 
     //초기화 작업들
-    props.setMarkers([]);
-    KAKAO_REMOVE_ALL_MARKER();
+    props.setSearchCurrentPage(1);
+    setSearchResults([]);
+    // props.setMarkers([]);
+    // KAKAO_REMOVE_ALL_MARKER();
+    resetMarkerAction();
     props.setIsSearchRequest(false);
   }
 
@@ -38,4 +36,4 @@ function Category(props) {
   );
 }
 
-export default withSearchCB(Category);
+export default Category;

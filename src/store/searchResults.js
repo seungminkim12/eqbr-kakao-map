@@ -14,7 +14,6 @@ export const searchResultsSlice = createSlice({
     },
     deleteSearchResults: (state, action) => {
       // state.searchResult.splice(0);
-      console.log("delete in");
       state.splice(0);
     },
   },
