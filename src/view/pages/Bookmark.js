@@ -41,7 +41,7 @@ function Bookmark() {
 
     //페이징 함수
     handlePaging(sortedBookmark);
-
+    //전체 북마크 임시 저장 state
     setSavedBookmark(sortedBookmark);
   };
 
@@ -70,11 +70,6 @@ function Bookmark() {
 
     // setIsLoadMore(false);
   };
-
-  //북마크해제 버튼 핸들러
-  function bmkReleaseHandler(bmkid) {
-    console.log("bmkid", bmkid);
-  }
 
   function noBmkBtnHandler() {
     navigate("/map");

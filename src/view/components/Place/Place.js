@@ -13,6 +13,7 @@ function Place(props) {
 
   //더보기 클릭 핸들러
   function moreInfoClickHandler(e) {
+    // 더보기 UX
     const detailsNodes = document.getElementsByTagName("details");
     for (let i = 0; i < detailsNodes.length; i++) {
       detailsNodes[i].removeAttribute("open");

@@ -15,25 +15,10 @@ const MapArea = (props) => {
     renderMapAction(container, false);
   }, []);
 
-  // const setOverlay = (overlay, keepMarkers) => {
-  //   // keepMarkers = overlay;
-  //   props.setOverlays((prev) => [...prev, overlay]);
-  // };
-
   useEffect(() => {
-    //렌더링 시 커스텀 오버레이 열리는 현상 방지
-    if (props.keepMarkers && props.keepMarkers.length > 0) {
-      // keepMarkers.forEach((keepMarker) => {
-      //   console.log("keepMarker", keepMarker);
-      //   keepMarker.setMap(null);
-      // });
-      // setKeepMarkers([]);
-    }
-    //
-
     searchResults &&
       searchResults.map((searchResult) => {
-        displayMarkerAction(searchResult, props.setOverlay, props.overlays);
+        displayMarkerAction(searchResult, false);
       });
   }, [searchResults]);
 
