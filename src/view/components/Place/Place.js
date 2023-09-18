@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import PlaceDetail from "./PlaceDetail";
 
-import { getOverlayAfterClick } from "../../../action/userAction";
+import {
+  getOverlayAction,
+  getOverlayAfterClick,
+} from "../../../action/userAction";
 
 import "../../styles/Place.scss";
 
@@ -10,8 +13,12 @@ function Place(props) {
 
   //더보기 클릭 핸들러
   function moreInfoClickHandler(e) {
+    const detailsNodes = document.getElementsByTagName("details");
+    for (let i = 0; i < detailsNodes.length; i++) {
+      detailsNodes[i].removeAttribute("open");
+    }
     setDetailOpenId(e.currentTarget.id);
-    getOverlayAfterClick(e.currentTarget.id, props.overlays);
+    getOverlayAction(e.currentTarget.id);
   }
 
   return (

@@ -13,7 +13,7 @@ let mapOptions = {
   level: 3, //지도의 레벨(확대, 축소 정도)
 };
 
-const bounds = new kakao.maps.LatLngBounds();
+let bounds = new kakao.maps.LatLngBounds();
 
 // 카카오맵 검색
 const places = new window.kakao.maps.services.Places();
@@ -107,7 +107,7 @@ export const displayMarker = (place, isImageMap) => {
     imagesize
   );
   const position = new kakao.maps.LatLng(+place.y, +place.x);
-
+  // bounds = new kakao.maps.LatLngBounds();
   bounds.extend(position);
   const marker = new kakao.maps.Marker({
     map,
@@ -207,10 +207,36 @@ export const KAKAO_DRAW_CUSTOMOVERLAY = (overlays, idx) => {
   overlays[idx].setMap(map);
 };
 
+const getOverLay = (currentId) => {
+  // overlays &&
+  //   overlays.forEach((overlay, idx) => {
+  //     if (overlay.cc.id === currentId) {
+  //       currentIdx = idx;
+  //     }
+  //   });c
+  let currentIdx = null;
+  KAKAO_OVERLAYS &&
+    KAKAO_OVERLAYS.forEach((ov, idx) => {
+      ov.setMap(null);
+      if (ov.cc.id === currentId) {
+        currentIdx = idx;
+      }
+    });
+
+  // if (!overlays || overlays.length <= 0) {
+  //   return;
+  // }
+  // KAK.map((overlay) => {
+  //   overlay.setMap(null);
+  // });
+  KAKAO_OVERLAYS[currentIdx].setMap(map);
+};
+
 export {
   renderMap as renderMapFromServer,
   displayMarker as displayMarkerFromServer,
   resetMarker as resetMarkerFromServer,
   searchPlaceByCategory as searchPlaceByCategoryFromServer,
   searchPlaceByKeyword as searchPlaceByKeywordFromServer,
+  getOverLay as getOverLayFromServer,
 };

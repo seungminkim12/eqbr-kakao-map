@@ -1,5 +1,6 @@
 import {
   eqbrCoord,
+  getOverLayFromServer,
   GET_SEARCH_RESULT_FAIL,
   GET_SEARCH_RESULT_NONE,
   GET_SEARCH_RESULT_SUCCESS,
@@ -54,4 +55,8 @@ export const searchPlaceByCategoryParser = async (category, page) => {
   } else if (status === GET_SEARCH_RESULT_NONE) {
   } else if (status === GET_SEARCH_RESULT_FAIL) {
   }
+};
+
+export const getOverLayParser = (currentId) => {
+  getOverLayFromServer(currentId);
 };

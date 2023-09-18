@@ -1,4 +1,5 @@
 import {
+  getOverLayParser,
   searchPlaceByCategoryParser,
   searchPlaceByKeywordParser,
 } from "parser/userParser";
@@ -130,13 +131,6 @@ export const goToMapAction = () => {
  * @param {*} currentId
  * @param {*} overlays
  */
-export const getOverlayAfterClick = (currentId, overlays) => {
-  let currentIdx = null;
-  overlays &&
-    overlays.forEach((overlay, idx) => {
-      if (overlay.cc.id === currentId) {
-        currentIdx = idx;
-      }
-    });
-  KAKAO_DRAW_CUSTOMOVERLAY(overlays, currentIdx);
+export const getOverlayAction = (currentId, overlays) => {
+  getOverLayParser(currentId);
 };

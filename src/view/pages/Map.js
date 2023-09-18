@@ -7,11 +7,7 @@ import { Provider } from "react-redux";
 //Context API
 export const SearchResultsContext = createContext(null);
 
-function Map(props) {
-  // //marker 들의 장소 데이터
-  // const [markersData, setMarkersData] = useState([]);
-  //marker 객체
-  // const [markers, setMarkers] = useState([]);
+function Map() {
   const [searchResults, setSearchResults] = useState([]);
   const [keepMarkers, setKeepMarkers] = useState([]);
   // 커스텀 오버레이 담고 있음
@@ -26,19 +22,19 @@ function Map(props) {
           // markers={markers}
           // markersData={markersData}
           // setMarkersData={setMarkersData}
-          bookmark={props.bookmark}
-          overlays={overlays}
-          isSearchRequest={isSearchRequest}
           // setMarkers={setMarkers}
-          setOverlays={setOverlays}
+          // setOverlays={setOverlays}
+          // overlays={overlays}
+          // bookmark={props.bookmark}
+          isSearchRequest={isSearchRequest}
           setIsSearchRequest={setIsSearchRequest}
         />
         <MapArea
-          // markers={markers}
-          // keepMarkers={keepMarkers}
-          overlays={overlays}
-          // setKeepMarkers={setKeepMarkers}
-          setOverlays={setOverlays}
+        // markers={markers}
+        // keepMarkers={keepMarkers}
+        // overlays={overlays}
+        // setKeepMarkers={setKeepMarkers}
+        // setOverlays={setOverlays}
         />
       </div>
     </SearchResultsContext.Provider>

@@ -1,13 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import BookmarkArea from "../components/Bookmark/BookmarkArea";
 import BookmarkMapArea from "../components/Bookmark/BookmarkMapArea";
-import {
-  KAKAO_CREATE_MAP,
-  KAKAO_DISPLAY_MARKER,
-} from "../../server/module/kakao-api";
 
 import "../styles/Bookmark.scss";
-import { goToMapAction } from "../../action/userAction";
 import { useNavigate } from "react-router-dom";
 import { displayMarkerAction, renderMapAction } from "action/mapAction";
 
@@ -87,19 +82,6 @@ function Bookmark() {
 
   useEffect(() => {
     handleBookmark();
-    /**
-     * 이미지 지도
-     */
-    // console.log("bookmarkList", bookmarkList);
-    // bookmarkList.length > 0 && renderMapAction(staticMapContainer, true);
-
-    // // const markerList = JSON.parse(localStorage.getItem("eqbrFavoriteSorted"));
-    // // const markerList = savedBookmark;
-
-    // bookmarkList.map((bmk) => {
-    //   //   console.log("bmk", bmk);
-    //   displayMarkerAction(bmk, null, null);
-    // });
   }, []);
 
   useEffect(() => {
@@ -107,7 +89,6 @@ function Bookmark() {
     bookmarkList.length > 0 && renderMapAction(staticMapContainer, true);
     bookmarkList.length > 0 &&
       bookmarkList.map((bmk) => {
-        // KAKAO_DISPLAY_MARKER(bmk, null, null);
         displayMarkerAction(bmk, true);
       });
   }, [bookmarkList]);
