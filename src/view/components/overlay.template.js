@@ -1,9 +1,8 @@
+import { addBookmarkAction } from "action/bookmarkAction";
 import {
-  addBookmarkAction,
-  addPlaceInBookmark,
-  openKakaoMapDetail,
-  openKakaoMapNavigation,
-} from "../../action/userAction";
+  openKakaoMapDetailAction,
+  openKakaoMapNavigationAction,
+} from "action/mapAction";
 
 export const getOverlayTemplate = (place) => {
   //개선 필요
@@ -47,14 +46,14 @@ export const getOverlayTemplate = (place) => {
   overLayDetailButton.className = "overlay-buttons";
   overLayDetailButton.innerText = "상세보기";
   overLayDetailButton.onclick = () => {
-    openKakaoMapDetail(place);
+    openKakaoMapDetailAction(place);
   };
 
   const overLayNavButton = document.createElement("button");
   overLayNavButton.className = "overlay-buttons";
   overLayNavButton.innerText = "길찾기";
   overLayNavButton.onclick = () => {
-    openKakaoMapNavigation(place);
+    openKakaoMapNavigationAction(place);
   };
 
   const buttonsDiv = document.createElement("div");

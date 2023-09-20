@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { addBookmarkAction } from "action/bookmarkAction";
 import {
-  addBookmarkAction,
-  openKakaoMapDetail,
-  openKakaoMapNavigation,
-} from "../../../action/userAction";
+  openKakaoMapDetailAction,
+  openKakaoMapNavigationAction,
+} from "action/mapAction";
+import React, { useState } from "react";
 
 import "./PlaceDetail.scss";
 
@@ -22,7 +22,7 @@ function PlaceDetail(props) {
           <button
             className="place-button"
             onClick={() => {
-              openKakaoMapDetail(props.place);
+              openKakaoMapDetailAction(props.place);
             }}
           >
             상세정보로 이동
@@ -42,7 +42,7 @@ function PlaceDetail(props) {
           <button
             className="place-button"
             onClick={() => {
-              openKakaoMapNavigation(props.place);
+              openKakaoMapNavigationAction(props.place);
             }}
           >
             길찾기

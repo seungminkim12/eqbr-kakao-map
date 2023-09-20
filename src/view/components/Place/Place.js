@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import PlaceDetail from "./PlaceDetail";
-
-import {
-  getOverlayAction,
-  getOverlayAfterClick,
-} from "../../../action/userAction";
+import { getOverlayAction } from "action/mapAction";
 
 import "./Place.scss";
 

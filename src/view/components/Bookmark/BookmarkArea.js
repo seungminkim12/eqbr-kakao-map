@@ -1,5 +1,6 @@
+import { removeBookmarkAction } from "action/bookmarkAction";
 import React, { useState, useEffect, useRef } from "react";
-import { removePlaceInBookmark } from "../../../action/userAction";
+
 import "./BookmarkArea.scss";
 
 function BookmarkArea(props) {
@@ -18,7 +19,7 @@ function BookmarkArea(props) {
 
   useEffect(() => {
     return () => {
-      removePlaceInBookmark(confirmDelBookmark.current);
+      removeBookmarkAction(confirmDelBookmark.current);
     };
   }, []);
 

@@ -1,8 +1,8 @@
+import { addBookmarkAction } from "action/bookmarkAction";
 import {
-  addBookmarkAction,
-  openKakaoMapDetail,
-  openKakaoMapNavigation,
-} from "action/userAction";
+  openKakaoMapDetailAction,
+  openKakaoMapNavigationAction,
+} from "action/mapAction";
 
 function Overlay(place, closefn) {
   console.log("overlay place", place);
@@ -22,9 +22,9 @@ function Overlay(place, closefn) {
           <button class='overlay-buttons' onClick=${() =>
             addBookmarkAction(place)}>즐겨찾기</button>
           <button class='overlay-buttons' onClick=${() =>
-            openKakaoMapDetail(place)}>상세보기</button>
+            openKakaoMapDetailAction(place)}>상세보기</button>
           <button class='overlay-buttons' onClick=${() =>
-            openKakaoMapNavigation(place)}>길찾기</button>
+            openKakaoMapNavigationAction(place)}>길찾기</button>
         </div>
       </div>
     </div>

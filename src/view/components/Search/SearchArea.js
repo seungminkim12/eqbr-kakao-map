@@ -3,13 +3,13 @@ import Category from "../Category/Category";
 import Place from "../Place/Place";
 
 import { CATEGORY_OBJ } from "view/asset/category.type";
-import searchOptionReset from "view/hooks/searchOptionReset";
 import { SearchResultsContext } from "../../pages/Map";
+
 import {
-  searchPlaceByKeywordAction,
+  resetMarkerAction,
   searchPlaceByCategoryAction,
-} from "action/userAction";
-import { resetMarkerAction } from "action/mapAction";
+  searchPlaceByKeywordAction,
+} from "action/mapAction";
 
 import "./SearchArea.scss";
 
@@ -43,7 +43,6 @@ function SearchArea(props) {
     setSearchInputValue(e.target.value);
 
     //state 초기화 작업들
-    searchOptionReset();
     resetMarkerAction();
     props.setIsSearchRequest(false);
     setBtnActive();
@@ -61,7 +60,6 @@ function SearchArea(props) {
 
   useEffect(() => {
     //state 초기화 작업들
-    searchOptionReset();
     resetMarkerAction();
     props.setIsSearchRequest(false);
     setBtnActive();
