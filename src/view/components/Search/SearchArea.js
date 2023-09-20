@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import Category from "../Category/Category";
 import Place from "../Place/Place";
 
-import "../../styles/SearchArea.scss";
 import { CATEGORY_OBJ } from "view/asset/category.type";
 import searchOptionReset from "view/hooks/searchOptionReset";
 import { SearchResultsContext } from "../../pages/Map";
@@ -11,6 +10,8 @@ import {
   searchPlaceByCategoryAction,
 } from "action/userAction";
 import { resetMarkerAction } from "action/mapAction";
+
+import "./SearchArea.scss";
 
 function SearchArea(props) {
   //검색 input state

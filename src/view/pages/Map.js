@@ -2,7 +2,7 @@ import React, { useState, createContext } from "react";
 import MapArea from "../components/Map/MapArea";
 import SearchArea from "../components/Search/SearchArea";
 
-import "../styles/Map.scss";
+import "./Map.scss";
 
 //Context API
 export const SearchResultsContext = createContext(null);

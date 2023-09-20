@@ -1,11 +1,10 @@
 .category-form {
-  width: 100%;
-  overflow: scroll;
-  color: #112031;
-  /* border: 1px solid #000; */
   /* 가로 스크롤 */
   overflow: auto;
+  width: 100%;
+  color: #112031;
   white-space: nowrap;
+  /* border: 1px solid #000; */
 }
 .category-item {
   position: relative;

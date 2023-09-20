@@ -5,7 +5,7 @@ import {
   openKakaoMapNavigation,
 } from "../../../action/userAction";
 
-import "../../styles/PlaceDetail.scss";
+import "./PlaceDetail.scss";
 
 function PlaceDetail(props) {
   //북마크 버튼 핸들러

@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from "react";
 import BookmarkArea from "../components/Bookmark/BookmarkArea";
 import BookmarkMapArea from "../components/Bookmark/BookmarkMapArea";
 
-import "../styles/Bookmark.scss";
 import { useNavigate } from "react-router-dom";
 import { displayMarkerAction, renderMapAction } from "action/mapAction";
+
+import "./Bookmark.scss";
 
 function Bookmark() {
   //저장된 북마크

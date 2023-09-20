@@ -19,6 +19,8 @@ const eqbrName = "이큐비알홀딩스";
 const eqbrY = "37.510901492192744";
 const eqbrX = "127.04499359218127";
 
+///서비스별 구분
+
 /**
  * 키워드 검색 유저 액션
  * @param {*} keyword
@@ -114,16 +116,6 @@ export const openKakaoMapDetail = (place) => {
 export const openKakaoMapNavigation = (place) => {
   const pathURL = `https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}/from/${eqbrName},${eqbrY},${eqbrX}`;
   window.open(pathURL);
-};
-
-/**
- * 북마크 추가하러가기 액션
- */
-export const goToMapAction = () => {
-  // navigate("/map");
-  // // window.history.pushState("", "", "/map");
-  // window.location("/map");
-  // useGoToPage("/map");
 };
 
 /**

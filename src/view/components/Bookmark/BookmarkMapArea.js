@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/BookmarkMapArea.scss";
+import "./BookmarkMapArea.scss";
 
 export default React.forwardRef(function BookmarkMapArea(props, ref) {
   return (

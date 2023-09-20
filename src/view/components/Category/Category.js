@@ -2,7 +2,7 @@ import { resetMarkerAction } from "action/mapAction";
 import React, { useState, useEffect, useContext } from "react";
 import { SearchResultsContext } from "view/pages/Map";
 
-import "../../styles/Category.scss";
+import "./Category.scss";
 
 function Category(props) {
   const { setSearchResults } = useContext(SearchResultsContext);

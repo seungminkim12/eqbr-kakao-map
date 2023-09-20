@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { removePlaceInBookmark } from "../../../action/userAction";
-import "../../styles/BookmarkArea.scss";
+import "./BookmarkArea.scss";
 
 function BookmarkArea(props) {
   const { bmk, idx } = props;

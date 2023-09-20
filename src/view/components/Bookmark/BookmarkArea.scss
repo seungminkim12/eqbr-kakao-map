@@ -5,9 +5,9 @@ bmk-button-family
 */
 
 .bookmark-items {
-  border: 1px solid black;
   margin-top: 10px;
   margin-bottom: 10px;
+  border: 1px solid black;
 }
 
 .bmk-info-family {
@@ -24,13 +24,13 @@ bmk-button-family
 
 .bookmark-button {
   position: relative;
+  transition: 0.25s;
   padding: 10px 15px;
   border-radius: 5px;
   border: 1px solid #6aafe6;
   /* box-shadow: 0 15px 35px #6aafe6; */
-  text-decoration: none;
   font-weight: 600;
-  transition: 0.25s;
+  text-decoration: none;
   font-family: "Gamja Flower", cursive;
 }
 .bookmark-button:hover {

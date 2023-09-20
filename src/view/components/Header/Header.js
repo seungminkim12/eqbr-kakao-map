@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import "../../styles/Header.scss";
+import "./Header.scss";
 
 function Header() {
   const [selectedBtn, setSelectedBtn] = useState("");

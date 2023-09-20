@@ -6,7 +6,7 @@ import {
   getOverlayAfterClick,
 } from "../../../action/userAction";
 
-import "../../styles/Place.scss";
+import "./Place.scss";
 
 function Place(props) {
   const [detailOpenId, setDetailOpenId] = useState("");

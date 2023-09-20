@@ -2,8 +2,7 @@ import { displayMarkerAction, renderMapAction } from "action/mapAction";
 import React, { useRef, useEffect, useState, useContext } from "react";
 import { SearchResultsContext } from "view/pages/Map";
 
-import "../../styles/MapArea.scss";
-import Marker from "../Marker/Marker";
+import "./MapArea.scss";
 
 const MapArea = (props) => {
   //지도를 담을 영역의 DOM 레퍼런스
