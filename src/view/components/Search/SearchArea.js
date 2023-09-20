@@ -44,33 +44,36 @@ function SearchArea(props) {
 
     //state 초기화 작업들
     resetMarkerAction();
-    props.setIsSearchRequest(false);
+    setIsSearchRequest(false);
     setBtnActive();
+    setSearchResults([]);
+    setSearchCategoryValue();
   }
 
   //검색 버튼 클릭 핸들러
   function searchClickHandler(e) {
     e.preventDefault();
     setSearchKeywordValue(searchInputValue);
-    // if (!isSearchRequest) {
-    //   setIsSearchRequest(true);
-    //   searchPlaceByKeywordAction(searchKeywordValue, searchCurrentPage);
-    // }
+    setSearchCurrentPage(1);
   }
 
   useEffect(() => {
     //state 초기화 작업들
     resetMarkerAction();
-    props.setIsSearchRequest(false);
+    setIsSearchRequest(false);
     setBtnActive();
   }, []);
 
   function setSearchResultsHandler(result) {
-    if (!result) return;
-    setSearchResults([...(searchResults ? searchResults : []), ...result.data]);
+    if (!result.result) return;
+    setSearchResults([
+      ...(searchResults ? searchResults : []),
+      ...result.result.data,
+    ]);
   }
 
   useEffect(() => {
+    // setSearchResults([]);
     if (searchCategoryValue) {
       // 카테고리로 검색하는 유저 액션
       const asyncSearchPlaceByCategoryAction = async () => {
@@ -165,7 +168,7 @@ function SearchArea(props) {
           {Object.entries(CATEGORY_OBJ).map(([id, value], idx) => {
             return (
               <Category
-                setIsSearchRequest={props.setIsSearchRequest}
+                setIsSearchRequest={setIsSearchRequest}
                 btnActive={btnActive}
                 setBtnActive={setBtnActive}
                 setSearchCategoryValue={setSearchCategoryValue}

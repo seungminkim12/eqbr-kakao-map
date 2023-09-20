@@ -5,7 +5,9 @@
  */
 export const addBookmarkAction = (place) => {
   //저장되어 있는 북마크 가져옴
-  const savedBookmarkData = JSON.parse(localStorage.getItem("eqbrBookmark"));
+  const savedBookmarkData = JSON.parse(
+    localStorage.getItem("eqbrBookmark") || ""
+  );
   // const savedBookmarkData = savedBookmark(storeState());
   //하나도 없는 case
   if (savedBookmarkData.length <= 0) {
@@ -45,7 +47,7 @@ export const addBookmarkAction = (place) => {
  */
 export const removeBookmarkAction = (id) => {
   //저장되어 있는 북마크 가져옴
-  const savedFavorData = JSON.parse(localStorage.getItem("eqbrBookmark"));
+  const savedFavorData = JSON.parse(localStorage.getItem("eqbrBookmark") || "");
   if (savedFavorData) {
     const checkId = savedFavorData.findIndex((data) => id === data.id);
     if (checkId >= 0) {

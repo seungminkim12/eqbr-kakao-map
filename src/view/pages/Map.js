@@ -9,15 +9,15 @@ export const SearchResultsContext = createContext(null);
 
 function Map() {
   const [searchResults, setSearchResults] = useState([]);
-  //searchRequest
-  const [isSearchRequest, setIsSearchRequest] = useState(false);
+  // //searchRequest
+  // const [isSearchRequest, setIsSearchRequest] = useState(false);
 
   return (
     <SearchResultsContext.Provider value={{ searchResults, setSearchResults }}>
       <div className="content-container">
         <SearchArea
-          isSearchRequest={isSearchRequest}
-          setIsSearchRequest={setIsSearchRequest}
+        // isSearchRequest={isSearchRequest}
+        // setIsSearchRequest={setIsSearchRequest}
         />
         <MapArea />
       </div>
