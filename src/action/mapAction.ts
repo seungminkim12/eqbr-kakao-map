@@ -1,13 +1,4 @@
 //Map Service Action
-
-// import {
-//   displayMarkerParser,
-//   renderMapParser,
-//   resetMarkerParser,
-//   searchPlaceByCategoryParser,
-//   searchPlaceByKeywordParser,
-//   getOverLayParser,
-// } from "parser/mapParser_origin";
 import {
   displayMarkerParser,
   renderMapParser,
@@ -39,7 +30,10 @@ export const displayMarkerAction = (place, isImageMap) =>
   actionController(() => {
     displayMarkerParser(place, isImageMap);
   });
-
+/**
+ * 마커 그리는 액션
+ * @returns
+ */
 export const resetMarkerAction = () =>
   actionController(() => {
     resetMarkerParser();
@@ -65,7 +59,6 @@ export const searchPlaceByKeywordAction = (keyword, page) =>
  */
 export const searchPlaceByCategoryAction = (category, page) =>
   actionController(async () => {
-    console.log("category action", category);
     const result = await searchPlaceByCategoryParser(category, page);
     return result ? result : null;
   });

@@ -10,13 +10,14 @@ function Category(props) {
   function cateBtnClickHandler(e) {
     //카테고리 버튼 클릭 체크
     props.setBtnActive(+e.target.value);
-    props.setSearchCategoryValue(e.target.id);
+    props.setSearchObj((prev) => ({
+      ...prev,
+      searchCategoryValue: e.target.id,
+    }));
 
     //초기화 작업들
     props.setSearchCurrentPage(1);
     setSearchResults([]);
-    // props.setMarkers([]);
-    // KAKAO_REMOVE_ALL_MARKER();
     resetMarkerAction();
     props.setIsSearchRequest(false);
   }

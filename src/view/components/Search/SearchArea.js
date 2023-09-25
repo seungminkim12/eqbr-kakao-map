@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import Category from "../Category/Category";
 import Place from "../Place/Place";
 
@@ -16,10 +22,15 @@ import "./SearchArea.scss";
 function SearchArea(props) {
   //검색 input state
   const [searchInputValue, setSearchInputValue] = useState("");
-  //검색 키워드 state
-  const [searchKeywordValue, setSearchKeywordValue] = useState("");
-  //검색 키워드 state
-  const [searchCategoryValue, setSearchCategoryValue] = useState("");
+  // //검색 키워드 state
+  // const [searchKeywordValue, setSearchKeywordValue] = useState("");
+  // //검색 카테고리 state
+  // const [searchCategoryValue, setSearchCategoryValue] = useState("");
+
+  const [searchObj, setSearchObj] = useState({
+    searchKeywordValue: "",
+    searchCategoryValue: "",
+  });
   //검색 페이지 state
   const [searchCurrentPage, setSearchCurrentPage] = useState(1);
   //검색 API request 요청 플래그
@@ -36,7 +47,35 @@ function SearchArea(props) {
   //검색버튼 dom
   const searchBtnRef = useRef(null);
 
-  const timerDebounceRef = useRef(null);
+  // const timerDebounceRef = useRef(null);
+
+  //옵저버
+  const observer = useRef();
+
+  const lastSearchResultElementRef = useCallback(
+    (node) => {
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting && !isSearchRequest) {
+          if (searchObj.searchKeywordValue) {
+            const result = await searchPlaceByKeywordAction(
+              searchObj.searchKeywordValue,
+              searchCurrentPage
+            );
+            setSearchResultsHandler(result);
+          } else if (searchObj.searchCategoryValue) {
+            const result = await searchPlaceByCategoryAction(
+              searchObj.searchCategoryValue,
+              searchCurrentPage
+            );
+            setSearchResultsHandler(result);
+          }
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [searchObj, searchResults, searchCurrentPage, isSearchRequest]
+  );
 
   //검색 input change 핸들러
   function onSearchIPChange(e) {
@@ -47,13 +86,22 @@ function SearchArea(props) {
     setIsSearchRequest(false);
     setBtnActive();
     setSearchResults([]);
-    setSearchCategoryValue();
+    // setSearchCategoryValue();
+    setSearchObj({
+      ...searchObj,
+      searchKeywordValue: "",
+      searchCategoryValue: "",
+    });
   }
 
   //검색 버튼 클릭 핸들러
   function searchClickHandler(e) {
     e.preventDefault();
-    setSearchKeywordValue(searchInputValue);
+    setSearchObj({
+      ...searchObj,
+      searchKeywordValue: searchInputValue,
+    });
+
     setSearchCurrentPage(1);
   }
 
@@ -64,32 +112,37 @@ function SearchArea(props) {
     setBtnActive();
   }, []);
 
-  function setSearchResultsHandler(result) {
-    if (!result.result) return;
-    setSearchResults([
-      ...(searchResults ? searchResults : []),
-      ...result.result.data,
-    ]);
+  /**
+   * 검색 결과 공통 처리 핸들러
+   * @param {*} param0
+   * @returns
+   */
+  function setSearchResultsHandler({ result }) {
+    if (!result) {
+      setIsSearchRequest(true);
+      return;
+    }
+
+    setSearchResults([...(searchResults ? searchResults : []), ...result.data]);
   }
 
   useEffect(() => {
-    // setSearchResults([]);
-    if (searchCategoryValue) {
+    if (searchObj.searchCategoryValue) {
       // 카테고리로 검색하는 유저 액션
       const asyncSearchPlaceByCategoryAction = async () => {
         const result = await searchPlaceByCategoryAction(
-          searchCategoryValue,
+          searchObj.searchCategoryValue,
           searchCurrentPage
         );
         setSearchResultsHandler(result);
       };
 
       asyncSearchPlaceByCategoryAction();
-    } else if (searchKeywordValue) {
+    } else if (searchObj.searchKeywordValue) {
       //키워드로 검색하는 유저 액션
       const asyncSearchPlaceByKeywordAction = async () => {
         const result = await searchPlaceByKeywordAction(
-          searchKeywordValue,
+          searchObj.searchKeywordValue,
           searchCurrentPage
         );
         setSearchResultsHandler(result);
@@ -97,7 +150,7 @@ function SearchArea(props) {
 
       asyncSearchPlaceByKeywordAction();
     }
-  }, [searchCategoryValue, searchKeywordValue]);
+  }, [searchObj]);
 
   useEffect(() => {
     //검색 결과에 따른 현재 검색 페이지 설정
@@ -108,37 +161,40 @@ function SearchArea(props) {
   }, [searchResults]);
 
   //무한 스크롤 로직
-  function handleDebounceScroll(e) {
-    const { scrollHeight, scrollTop, offsetHeight } = e.target;
-    if (timerDebounceRef.current) {
-      clearTimeout(timerDebounceRef.current);
-    }
+  // function handleDebounceScroll(e) {
+  //   const { scrollHeight, scrollTop, offsetHeight } = e.target;
+  //   if (timerDebounceRef.current) {
+  //     clearTimeout(timerDebounceRef.current);
+  //   }
 
-    timerDebounceRef.current = setTimeout(async () => {
-      if (scrollHeight <= scrollTop + offsetHeight) {
-        if (!isSearchRequest) {
-          setIsSearchRequest(true);
-          if (searchKeywordValue) {
-            const result = await searchPlaceByKeywordAction(
-              searchKeywordValue,
-              searchCurrentPage
-            );
-            setSearchResultsHandler(result);
-          } else {
-            const result = await searchPlaceByCategoryAction(
-              searchCategoryValue,
-              searchCurrentPage
-            );
-            setSearchResultsHandler(result);
-          }
-        }
-      }
-    }, 500);
-  }
+  //   timerDebounceRef.current = setTimeout(async () => {
+  //     if (scrollHeight <= scrollTop + offsetHeight) {
+  //       if (!isSearchRequest) {
+  //         setIsSearchRequest(true);
+  //         if (searchObj.searchKeywordValue) {
+  //           const result = await searchPlaceByKeywordAction(
+  //             searchObj.searchKeywordValue,
+  //             searchCurrentPage
+  //           );
+  //           setSearchResultsHandler(result);
+  //         } else {
+  //           const result = await searchPlaceByCategoryAction(
+  //             searchObj.searchCategoryValue,
+  //             searchCurrentPage
+  //           );
+  //           setSearchResultsHandler(result);
+  //         }
+  //       }
+  //     }
+  //   }, 500);
+  // }
 
   return (
     <>
-      <div className="search-container" onScroll={handleDebounceScroll}>
+      <div
+        className="search-container"
+        // onScroll={handleDebounceScroll}
+      >
         <div className="search-form">
           <input
             type="text"
@@ -171,7 +227,8 @@ function SearchArea(props) {
                 setIsSearchRequest={setIsSearchRequest}
                 btnActive={btnActive}
                 setBtnActive={setBtnActive}
-                setSearchCategoryValue={setSearchCategoryValue}
+                searchObj={searchObj}
+                setSearchObj={setSearchObj}
                 setSearchCurrentPage={setSearchCurrentPage}
                 key={id}
                 id={id}
@@ -187,7 +244,15 @@ function SearchArea(props) {
               {/* key 값이 안들어감 */}
               {searchResults && searchResults.length > 0 ? (
                 searchResults.map((item, idx) => {
-                  return <Place item={item} idx={idx} key={item.id} />;
+                  if (searchResults.length === idx + 1) {
+                    return (
+                      <div ref={lastSearchResultElementRef} key={item}>
+                        <Place item={item} idx={idx} key={item.id} />
+                      </div>
+                    );
+                  } else {
+                    return <Place item={item} idx={idx} key={item.id} />;
+                  }
                 })
               ) : props.isSearched ? (
                 <div> 검색 결과가 없습니다.</div>

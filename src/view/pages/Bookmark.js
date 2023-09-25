@@ -62,14 +62,10 @@ function Bookmark() {
 
   //더보기 버튼 클릭 핸들러
   const loadMoreButtonHandler = () => {
-    // setIsLoadMore(true);
-
     handlePaging(savedBookmark);
     savedBookmark.map((sb) => {
       // displayMarker(sb);
     });
-
-    // setIsLoadMore(false);
   };
 
   function noBmkBtnHandler() {
@@ -81,7 +77,6 @@ function Bookmark() {
   }, []);
 
   useEffect(() => {
-    // handleBookmark();
     bookmarkList.length > 0 && renderMapAction(staticMapContainer, true);
     bookmarkList.length > 0 &&
       bookmarkList.map((bmk) => {
