@@ -15,6 +15,7 @@ import {
   searchPlaceByCategoryParser,
   searchPlaceByKeywordParser,
   getOverLayParser,
+  zoomMapParser,
 } from "parser/mapParser";
 import { actionController } from "./utils/actionController";
 
@@ -26,6 +27,13 @@ export const renderMapAction = (container, isImageMap) =>
   actionController(() => {
     renderMapParser(container, isImageMap);
   });
+
+export const zoomMapAction = (zoomType: boolean) => {
+  actionController(() => {
+    zoomMapParser(zoomType);
+  });
+};
+
 // cb, overlays
 export const displayMarkerAction = (place, isImageMap) =>
   actionController(() => {
@@ -57,6 +65,7 @@ export const searchPlaceByKeywordAction = (keyword, page) =>
  */
 export const searchPlaceByCategoryAction = (category, page) =>
   actionController(async () => {
+    console.log("category action", category);
     const result = await searchPlaceByCategoryParser(category, page);
     return result ? result : null;
   });

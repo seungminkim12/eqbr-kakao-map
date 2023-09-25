@@ -1,4 +1,8 @@
-import { displayMarkerAction, renderMapAction } from "action/mapAction";
+import {
+  displayMarkerAction,
+  renderMapAction,
+  zoomMapAction,
+} from "action/mapAction";
 import React, { useRef, useEffect, useState, useContext } from "react";
 import { SearchResultsContext } from "view/pages/Map";
 
@@ -21,9 +25,33 @@ const MapArea = (props) => {
       });
   }, [searchResults]);
 
+  const handleZoomBtnHandler = (e) => {
+    console.log("e.target.id", e.currentTarget.id);
+    const zoomType = e.currentTarget.id === "zoomInBtn" ? true : false;
+    zoomMapAction(zoomType);
+  };
+
   return (
     <>
       <div className="map-container" ref={container}></div>
+      <div className="custom_zoomcontrol radius_border">
+        <span onClick={handleZoomBtnHandler} id="zoomInBtn">
+          <img
+            src={
+              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png"
+            }
+            alt={"확대"}
+          />
+        </span>
+        <span onClick={handleZoomBtnHandler} id="zoomOutBtn">
+          <img
+            src={
+              "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png"
+            }
+            alt={"축소"}
+          />
+        </span>
+      </div>
     </>
   );
 };

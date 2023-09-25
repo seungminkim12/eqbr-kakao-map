@@ -48,6 +48,15 @@ export const renderMap = (container, isImageMap) => {
 };
 
 /**
+ * 그려진 맵을 확대축소 하는 함수
+ * @param {*} zoomType
+ */
+export const zoomMap = (zoomType) => {
+  const zoomRatio = zoomType ? map.getLevel() - 1 : map.getLevel() + 1;
+  map.setLevel(zoomRatio);
+};
+
+/**
  * 키워드로 검색하는 함수
  * @param {*} keyword
  * @param {*} callback

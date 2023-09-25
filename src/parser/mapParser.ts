@@ -1,3 +1,4 @@
+import { actionController } from "action/utils/actionController";
 import {
   eqbrCoord,
   getOverLayFromServer,
@@ -9,6 +10,7 @@ import {
   displayMarkerFromServer,
   renderMapFromServer,
   resetMarkerFromServer,
+  zoomMap,
 } from "module/kakao-api";
 import { parserController } from "./utils/parserController";
 
@@ -21,6 +23,12 @@ export const renderMapParser = (container: any, isImageMap: boolean) =>
   parserController(() => {
     renderMapFromServer(container, isImageMap);
   });
+
+export const zoomMapParser = (zoomType: boolean) => {
+  actionController(() => {
+    zoomMap(zoomType);
+  });
+};
 
 export const displayMarkerParser = (place: any, isImageMap: boolean) =>
   parserController(() => {
